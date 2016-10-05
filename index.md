@@ -4,10 +4,10 @@ layout: index
 
 
 
-#Documentación
+# Documentación
 
 
-##Hito 1
+## Hito 1
 
 
 Documentación sobre el planteamiento del proyecto
