@@ -1,2 +1,3 @@
-# Geoke-Web
-Pagina web de la aplicación Geoke en Android.
+# Web Geoke
+Sitio web para la añadir, modificar, eliminar, consultar las gymkhanas.
+Ademas de ver estadísticas y ranking.
