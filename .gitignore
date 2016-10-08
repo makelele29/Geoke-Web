@@ -1,4 +1,4 @@
-
+#PHP
 /vendor/*
 /config/app.php
 
@@ -15,3 +15,19 @@
 
 /logs/*
 !/logs/empty
+
+/app/tmp/*
+/app/Config/core.php
+/app/Config/database.php
+/vendors/*
+
+#CSS
+
+<?xml version="1.0" encoding="utf-8"?>
+<CatapultProject Version="1" MasterStylesheet="/Content/Resources/Stylesheets/Styles.css" MasterPageLayout="/Content/Resources/PageLayouts/Default.flpgl" MasterStylesheetOverride="True" xml:lang="en-us" SourceControlBound="true" Comment="This template contains a minimum number of content and project files, including a single topic. It is the best choice for those who want to begin with a skeleton project." SourceControlDatabaseRoot="C:\Users\mramirez\Documents\My Projects\Bugs\SourceControlGit\GitIgnore" SourceControlDatabase="C:\Users\mramirez\Documents\My Projects\Bugs\SourceControlGit\GitIgnore\.git" SourceControlProviderType="Git" ProjectGuid="e4ef4672-93e9-4ea9-bd4b-11edfe271b23">
+</CatapultProject>
+
+.settings/
+.classpath
+.project
+*.class
