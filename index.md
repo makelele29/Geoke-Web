@@ -1,12 +1,12 @@
 ---
 layout: index
 ---
+
 ## Hito 0
 
 Corregido errores en la entrega del hito 0
 
 - - -
-
 
 [Milestone del hito 0](https://github.com/makelele29/Geoke-Web/milestone/2)
 
@@ -29,3 +29,5 @@ Opcionalmente si me da tiempo tendrá para la parte de administrador un seguimie
 - Servicio web
 - Amazon Web Service
 - Opcional : Google Maps APIs
+
+
