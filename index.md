@@ -9,7 +9,7 @@ Corregido errores en la entrega del hito 0
 
 [Milestone del hito 0](https://github.com/makelele29/Geoke-Web/milestone/2)
 
-## Hito 1
+## [Hito 1](#hito1)
 
 ### Proyecto elegido
 
