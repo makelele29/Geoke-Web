@@ -1,3 +1,2 @@
 # Web Geoke
-Sitio web para añadir, modificar, eliminar, consultar las gymkhanas.
-Ademas de ver estadísticas y ranking.
+[Descripción del proyecto](https://makelele29.github.io/Geoke-Web/#hito-1)
