@@ -16,6 +16,7 @@ Aqui se mostraran los cambios, ejercicios y evolución del proyecto que han pedi
 ### Milestone
 
 [Hito 1](https://github.com/makelele29/Geoke-Web/milestone/1)
+
 [Ejercicios del tema 1](https://github.com/makelele29/Ejercicios-IV/milestone/1?closed=1)
 
 ### Tema 1
