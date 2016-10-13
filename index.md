@@ -11,23 +11,19 @@ Corregido errores en la entrega del hito 0
 [Milestone del hito 0](https://github.com/makelele29/Geoke-Web/milestone/2)
 
 ## Hito 1
+Aqui se mostraran los cambios, ejercicios y evolución del proyecto que han pedido en el hito 1.
 
-### Proyecto elegido
+###Milestone
 
-Sitio web Geoke
+[Hito 1](https://github.com/makelele29/Geoke-Web/milestone/1)
+[Ejercicios del tema 1](https://github.com/makelele29/Ejercicios-IV/milestone/1?closed=1)
 
-### Breve descripción
+### Tema 1
 
-Para el proyecto de esta asignatura he decido crear una web como suplemento de una aplicación en android.
-En este caso la web tendrá un registro y inicio de sesión,  contara con un ranking para ver quien fue el más rápido en realizar la gymkhana, estadísticas sobre los resultados obtenidos.
-Constara con creación, modificación y eliminación de gymkhanas.
-Opcionalmente si me da tiempo tendrá para la parte de administrador un seguimiento de los usuarios que estén realizando su gymkhana en dicho momento.
+[Ejercicios](https://makelele29.github.io/Ejercicios-IV/)
 
-### Servicios necesarios
 
-- Servidor de base de datos
-- Servicio web
-- Amazon Web Service
-- Opcional : Google Maps APIs
+### Proyecto
 
+[Descripción del proyecto](https://github.com/makelele29/Geoke-Web/blob/master/README.md)
 
