@@ -13,7 +13,7 @@ Corregido errores en la entrega del hito 0
 ## Hito 1
 Aqui se mostraran los cambios, ejercicios y evolución del proyecto que han pedido en el hito 1.
 
-###Milestone
+### Milestone
 
 [Hito 1](https://github.com/makelele29/Geoke-Web/milestone/1)
 [Ejercicios del tema 1](https://github.com/makelele29/Ejercicios-IV/milestone/1?closed=1)
