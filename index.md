@@ -6,9 +6,10 @@ layout: index
 
 Corregido errores en la entrega del hito 0
 
-- - -
 
 [Milestone del hito 0](https://github.com/makelele29/Geoke-Web/milestone/2)
+
+***
 
 ## Hito 1
 Aqui se mostraran los cambios, ejercicios y evolución del proyecto que han pedido en el hito 1.
@@ -28,3 +29,4 @@ Aqui se mostraran los cambios, ejercicios y evolución del proyecto que han pedi
 
 [Descripción del proyecto](https://github.com/makelele29/Geoke-Web/blob/master/README.md)
 
+***
