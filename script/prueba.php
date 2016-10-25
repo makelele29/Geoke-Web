@@ -1,6 +1,6 @@
 <?php
 
-public function prueba($variableTrue){
+function prueba($variableTrue){
 
   assertTrue($variableTrue);
 }
