@@ -1,5 +1,5 @@
 <?php
-include('../script/prueba.php');
+require_once($_SERVER['DOCUMENT_ROOT']."/script/prueba.php");
 // Podemos observar varias de las convenciones que dijimos anteriormente
 // El nombre del archivo termina en Test
 // El nombre de nuestra clase termina en Test y es igual al del archivo
