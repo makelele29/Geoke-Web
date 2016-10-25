@@ -2,6 +2,6 @@
 
 function prueba($variableTrue){
 
-  assertTrue($variableTrue);
+  assert($variableTrue==True);
 }
 ?>
