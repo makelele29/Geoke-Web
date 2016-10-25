@@ -10,7 +10,7 @@ class MiPrimerTest extends \PHPUnit_Framework_TestCase
     // esta función no prueba ninguna otra función por lo tanto el nombre solo describe lo que hace
     // en este caso vamos a probar que True es igual a True
     public function testParaProbarQueTrueEsTrue(){
-        $variableTrue = True;
+        $variableTrue = False;
         prueba($variableTrue);
     }
 }
