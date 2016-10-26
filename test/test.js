@@ -9,7 +9,7 @@ describe("Prueba Test",function(){
 
   
   var conexion = null;
-  db.connect( {host: 'localhost', port: 28015}, function(err, conn) {
+  db.connect( {host: 'localhost', port: 29015}, function(err, conn) {
 		console.log("prueba");
      assert.fail(error,"Fallaco");
       conexion = conn;

@@ -2,7 +2,7 @@ var db = require('rethinkdb');
 var assert = require('assert');
 function rethinkdb(){
   var conexion = null;
-  db.connect( {host: 'localhost', port: 28015}, function(err, conn) {
+  db.connect( {host: 'localhost', port: 8080}, function(err, conn) {
       if (err) throw err;
       conexion = conn;
   })
