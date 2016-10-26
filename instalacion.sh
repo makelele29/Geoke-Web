@@ -1,6 +1,7 @@
 #!/bin/bash
-sudo cp config_rethinkdb /etc/rethinkdb/instances.d/instance1.conf
-sudo /etc/init.d/rethinkdb restart
+#sudo cp config_rethinkdb /etc/rethinkdb/instances.d/instance1.conf
+#sudo /etc/init.d/rethinkdb restart
+rethinkdb &
 npm install express-generator -g
 express Geoke
 cp -r package.json Geoke/
