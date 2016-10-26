@@ -3,7 +3,9 @@ source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_
 wget -qO- https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install rethinkdb
-rethinkdb
+sudo cp /etc/rethinkdb/default.conf.sample /etc/rethinkdb/instances.d/instance1.conf
+sudo vim /etc/rethinkdb/instances.d/instance1.conf
+sudo /etc/init.d/rethinkdb restart
 npm install express-generator -g
 express Geoke
 cp -r package.json Geoke/
