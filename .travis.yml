@@ -12,3 +12,5 @@ services:
 notifications:
     on_success: never
     on_failure: never
+addons:
+  rethinkdb: "2.3.3"
