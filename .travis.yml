@@ -1,12 +1,11 @@
-language: php
-php:
-  - '5.4'
-  - '5.5'
-  - '5.6'
-  - '7.0'
-  - hhvm
+language: node_js
+node_js:
+  - "0.11.16"
+  - "4.6.1"
+  - "6.9.0"
 sudo: required
-script: phpunit test/Test.php
+before_install: ./instalacion.sh
+install: cd Geoke/ && npm test
 services:
   - mongodb
   - mysql
