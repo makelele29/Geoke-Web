@@ -9,7 +9,8 @@ install: cd Geoke/ && npm test
 services:
   - mongodb
   - mysql
-  - rethinkdb
+addons:
+  rethinkdb: "2.3"
 notifications:
     on_success: never
     on_failure: never
