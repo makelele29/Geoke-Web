@@ -4,7 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var mongoose     = require('mongoose');
+var config = require('./conexiones/mongoose.js');
 var routes = require('./routes/index');
 var api = require('./routes/api');
 
@@ -24,7 +25,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/api', api);
-
+// connect to our database
+mongoose.Promise = global.Promise
+mongoose.connect('mongodb://localhost:27017/database');
+mongoose.connection.on('error', function() {
+  console.info('Mongodb server no esta activado. sudo service mongod start');
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

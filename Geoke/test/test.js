@@ -1,20 +1,58 @@
 
-var assert = require('assert');
-var BDMongo = require('../public/javascripts/mongodb.js');
-//Funcion para conectar a la base de datos
+var chai = require('chai');
+var chaiHttp = require('chai-http');
+var server = require('../app');
+var should = chai.should();
 
-//-----------------------------------------------------------------------------------------------------------------------
-// Función para las pruebas con la base de datos
-describe("Prueba Test",function(){
-  describe("Pruebas con MongoDB",function(){
-    it("Nuevo usuario, alias -> javielele  contraseña -> IV" ,function(done){
-      var bd=new BDMongo();
-      var f=bd.registrar("cr1","Jar","Caillo","I");
-      console.log(f);
-      assert.fail(f.ok,f.mensaje);
+chai.use(chaiHttp);
+describe('Test de usuarios (Mongodb)', function() {
+  it('Deberia añadir Javi con contraseña 12345a',function(done){
+    chai.request(server)
+    .post('/api/usuario')
+    .send({nombre:'javier', alias: 'Javi',pass: '12345a',apellidos:'Castillo'})
+    .end(function(err, res){
+      res.should.have.status(200);
+      res.should.be.json;
       done();
 
     });
+
+  });
+  it('Deberia no añadir otro Javi con contraseña 12345a',function(done){
+    chai.request(server)
+    .post('/api/usuario')
+    .send({nombre:'javier', alias: 'Javi',pass: '12345a',apellidos:'Castillo'})
+    .end(function(err, res){
+      res.should.have.status(500);
+      res.should.be.json;
+      done();
+
+    });
+
+  });
+  it('Deberia iniciar sesion con Javi t contraseña 12345a',function(done){
+    chai.request(server)
+    .post('/api/login')
+    .send({ alias: 'Javi',pass: '12345a'})
+    .end(function(err, res){
+      res.should.have.status(200);
+      res.should.be.json;
+      done();
+
+    });
+  });
+    it('Deberia no iniciar sesion con Jav y contraseña 12345',function(done){
+      chai.request(server)
+      .post('/api/login')
+      .send({ alias: 'Jav',pass: '12345'})
+      .end(function(err, res){
+        res.should.have.status(500);
+        res.should.be.json;
+        done();
+
+      });
+
+
   });
 
 });

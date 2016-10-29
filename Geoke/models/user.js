@@ -1,5 +1,5 @@
 var mongoose     = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/db');
+
 // create a schema
 var userSchema = new mongoose.Schema({
   nombre: String,
@@ -9,4 +9,4 @@ var userSchema = new mongoose.Schema({
 });
 
 
-module.exports= mongoose.model('users', userSchema);
+module.exports= mongoose.model('usuarios', userSchema);

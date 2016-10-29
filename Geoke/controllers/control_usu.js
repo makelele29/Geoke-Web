@@ -1,55 +1,71 @@
 var mongoose = require('mongoose');
-var Usu = require('../models/user.js');
+var model_usu = require('../models/user.js');
 
 //GET - Devuelve los datos de todos los usuarios
 exports.findAll = function(req, res) {
- Usu.find(function(err, Usus) {
-   if(err)res.json(500, { error:err.message});
-   console.log('GET /Usuario')
-   res.json(200,Usus);
+ model_usu.find(function(err, result) {
+   if(err) return res.json(500, { mensaje:err.message});
+   res.json(200,result);
  });
 };
 
 //GET - Devuelve los datos de un usuario especifico
-exports.findById = function(req, res) {
-  var resu=Usu.find({alias:req.params.alias});
-   if(resu.lenght()==0) res.json(500, { error: 'No hay ningun usuario registrado' });
-   console.log('GET /Usuario/' + req.params.alias);
-   res.json(Usu);
+exports.findByAlias = function(req, res) {
+  model_usu.find({alias:req.params.alias},function(err, result){
+    if(err) return res.json(500, { mensaje: 'No hay ningun usuario registrado' });
+    res.json(result);
+  });
+
+
 
 };
 
 //POST - Insertar nuevo usuario
 exports.add = function(req, res) {
- console.log('POST');
- console.log(req.body);
- var Usu = new Usu({
+ var usu = new model_usu({
+   nombre: req.body.nombre,
    alias: req.body.alias,
    contraseña: req.body.pass,
-   nombre: req.body.nombre,
    apellidos: req.body.apellidos
  });
- Usu.save(function(err, Usu) {
-   if(err) res.json(500, {error: 'El usuario ya esta registrado'});
-   res.json(200,Usu);
+
+ usu.save(function(err, result) {
+   if(err) return res.json(500,{mensaje: 'El usuario ya esta registrado'});
+   res.json(200,result);
  });
 };
 
 //PUT - Actualiza usuario
 exports.update = function(req, res) {
-  var result=Usu.findAndModify({
+  model_usu.findAndModify({
     query: { alias: req.body.alias},
     update: { $set: { nombre:req.body.nombre,apellidos: req.body.apellidos } }
+  },function(err,result){
+    if(err) res.json(500,{mensaje:'Hubo un problema al actualizar los datos personales'});
+    return res.json(200,{mensaje: 'El usuario ha sido actualizado'});
   });
-  if(result==null)
-    res.json(500,{mensaje:'Hubo un problema al actualizar los datos personales'});
-  res.json(200,{mensaje: 'El usuario ha sido actualizado'});
+
+
 };
 
 //DELETE - Elimina a un usuario
-exports.delete = function(req, res) {
-  var result=Usu.deleteOne({alias:req.body.alias});
-  if(result.deletedCount==0)
-    res.json(500,{mensaje:'El usuario no existe'});
-  res.json(200,{mensaje: 'El usuario ha sido eliminado'});
+exports.eliminar = function(req, res) {
+  model_usu.deleteOne({alias:req.body.alias},function(err, result) {
+    if(err) return res.json(500,{mensaje:'El usuario no existe'});
+    res.json(200,{mensaje: 'El usuario ha sido eliminado'});
+  });
+
+
+
+};
+//POST - Te confirma si el usuario esta registrado
+exports.login = function(req, res) {
+  model_usu.findOne({alias:req.body.alias, contraseña:req.body.pass},function(err,result){
+    if(err) return res.json(500, { mensaje: 'error al encontrar el usuario.' });
+    if(result==null) return res.json(500, { mensaje: 'Necesita registrarse.' });
+    res.json(200,{mensaje: 'Inicio de sesión con '+req.body.alias});
+  });
+
+
+
 };
