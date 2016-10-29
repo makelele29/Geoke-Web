@@ -18,3 +18,30 @@ Consistirá en que los usuarios puedan crear, eliminar y editar gymkhanas, adem�
 - Base de datos para usuarios
 - Base de datos para la creación de gymkhanas, estadisticas, ranking, etc.
 - Base de datos para almacenar las localizaciones de los usuario
+
+### Requisitos
+
+- Mongodb server
+- MySQL server
+- nodejs
+- npm
+
+### Ejecución
+
+###### Instalación
+
+```bash
+
+npm install
+sudo service mongod start
+npm start
+
+```
+
+###### Test
+
+```bash
+
+npm test
+
+```
