@@ -27,7 +27,7 @@ app.use('/', routes);
 app.use('/api', api);
 // connect to our database
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://localhost:27017/database');
+mongoose.connect('mongodb://localhost:27017/test');
 mongoose.connection.on('error', function() {
   console.info('Mongodb server no esta activado. sudo service mongod start');
 });

@@ -30,8 +30,9 @@ exports.add = function(req, res) {
  });
 
  usu.save(function(err, result) {
+   console.log(err);
    if(err) return res.json(500,{mensaje: 'El usuario ya esta registrado'});
-   console.log(result);
+
    res.json(200,result);
  });
 };
