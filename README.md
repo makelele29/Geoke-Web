@@ -2,6 +2,8 @@
 
 ***
 
+[![Build Status](https://travis-ci.org/makelele29/Geoke-Web.svg?branch=master)](https://travis-ci.org/makelele29/Geoke-Web)
+
 ### Descripción
 
 La web está diseñada para darle apoyo a la aplicación en android Geoke (TFG), dicha aplicación consiste en jugar a las gymkhanas creadas cerca de ti, ya sean tuyas o de otro usuario.
