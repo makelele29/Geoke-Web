@@ -39,7 +39,7 @@ exports.add = function(req, res) {
 exports.update = function(req, res) {
   model_usu.findOne({alias: req.params.alias},function(err,usu){
     if(err) return res.json(501, { mensaje:err.message});
-    if(result==null) return res.json(502, { mensaje: 'No hay ningun usuario con ese alias' });
+    if(usu==null) return res.json(502, { mensaje: 'No hay ningun usuario con ese alias' });
     if(req.body.nombre)usu.nombre=req.body.nombre;
     if(req.body.pass)usu.contraseña=req.body.pass;
     if(req.body.apellidos)usu.apellidos=req.body.apellidos;
