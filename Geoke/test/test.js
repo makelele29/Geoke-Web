@@ -49,10 +49,7 @@ describe('Test de usuarios (Mongodb)', function() {
         res.should.have.status(500);
         res.should.be.json;
         done();
-
       });
-
-
   });
 
 });
