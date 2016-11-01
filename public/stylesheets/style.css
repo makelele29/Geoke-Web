@@ -1,8 +1,28 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-image: url('../images/fondo.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
-a {
-  color: #00B7FF;
+.carousel-caption{
+  /* Fallback for web browsers that don't support RGBa */
+      background-color: rgb(0, 0, 0);
+      /* RGBa with 0.6 opacity */
+      background-color: rgba(0, 0, 0, 0.6);
+      /* For IE 5.5 - 7*/
+      filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+      /* For IE 8*/
+      -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+}
+.carousel-inner img {
+      width: 100%; /* Set width to 100% */
+      margin: auto;
+      min-height:75px;
+      max-height: 400px;
+  }
+/* Hide the carousel text when the screen is less than 600 pixels wide */
+@media (max-width: 600px) {
+    .carousel-caption {
+      display: none;
+    }
 }
