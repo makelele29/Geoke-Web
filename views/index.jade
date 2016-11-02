@@ -1,51 +1,36 @@
-html
-  head
-    // Optional theme
-    // Latest compiled and minified CSS
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
-    // Optional theme
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css', integrity='sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp', crossorigin='anonymous')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    .container
-      header.row
-        center
-          .col-md-12
-            img.img-responsive(src='/images/icono3.png')
-      hr.spartan
-      #myCarousel.carousel.slide(data-ride='carousel')
-        // Indicators
-        ol.carousel-indicators
-          li.active(data-target='#myCarousel', data-slide-to='0')
-          li(data-target='#myCarousel', data-slide-to='1')
-        // Wrapper for slides
-        .carousel-inner(role='listbox')
-          .item.active
-            img.img-rounded(src='/images/preguntas.jpg', alt='Image')
-            .carousel-caption
-              h3 Preguntas
-              p
-                | Podras añadir todas las preguntas que deseas a tu gymkhana de la manera más facil
-          .item
-            img.img-rounded(src='/images/gymkhana.jpg', alt='Image')
-            .carousel-caption
-              h3 Gymkhanas
-              p
-                | Podras crear,modificar y editar gymkhanas, además de jugar a gymkhanas tanto tuyas como de otros usuarios
-        // Left and right controls
-        a.left.carousel-control(href='#myCarousel', role='button', data-slide='prev')
-          span.glyphicon.glyphicon-chevron-left(aria-hidden='true')
-          span.sr-only Previous
-        a.right.carousel-control(href='#myCarousel', role='button', data-slide='next')
-          span.glyphicon.glyphicon-chevron-right(aria-hidden='true')
-          span.sr-only Next
-      hr.spartan
-      .row
-        .col-md-4
-        .col-md-4
-            button.btn.btn-success.btn-lg(type='button', onclick="window.location.href='/login'") Iniciar sesión
-            button.btn.btn-primary.btn-lg(type='button', onclick="window.location.href='/registrar'") Registrarse
-        .col-md-4
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
-    // Latest compiled and minified JavaScript
-    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
+extends layout.jade
+block contenido
+  #myCarousel.carousel.slide(data-ride='carousel')
+    // Indicators
+    ol.carousel-indicators
+      li.active(data-target='#myCarousel', data-slide-to='0')
+      li(data-target='#myCarousel', data-slide-to='1')
+    // Wrapper for slides
+    .carousel-inner(role='listbox')
+      .item.active
+        img.img-rounded(src='/images/preguntas.jpg', alt='Image')
+        .carousel-caption
+          h3 Preguntas
+          p
+            | Podras añadir todas las preguntas que deseas a tu gymkhana de la manera más facil
+      .item
+        img.img-rounded(src='/images/gymkhana.jpg', alt='Image')
+        .carousel-caption
+          h3 Gymkhanas
+          p
+            | Podras crear,modificar y editar gymkhanas, además de jugar a gymkhanas tanto tuyas como de otros usuarios
+    // Left and right controls
+    a.left.carousel-control(href='#myCarousel', role='button', data-slide='prev')
+      span.glyphicon.glyphicon-chevron-left(aria-hidden='true')
+      span.sr-only Previous
+    a.right.carousel-control(href='#myCarousel', role='button', data-slide='next')
+      span.glyphicon.glyphicon-chevron-right(aria-hidden='true')
+      span.sr-only Next
+  hr.spartan
+  .row
+    .col-md-4
+    .col-md-4
+        button.btn.btn-success.btn-lg(type='button', onclick="window.location.href='/login'") Iniciar sesión
+        button.btn.btn-primary.btn-lg(type='button', onclick="window.location.href='/registrar'") Registrarse
+    .col-md-4
+  
