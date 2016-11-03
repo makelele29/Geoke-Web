@@ -22,7 +22,7 @@
     "sequelize": "^3.24.6"
   },
   "scripts": {
-    "start": "nodejs app.js",
+    "start": "node app.js",
     "test": "mocha "
   },
   "repository": {
