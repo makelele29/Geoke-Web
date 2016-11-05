@@ -25,8 +25,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/api', api);
 // connect to our database
+var uristring =
+    process.env.MONGOLAB_URI ||
+    process.env.MONGOHQ_URL ||
+    'mongodb://localhost:27017/db';
+
+
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://localhost:27017/test');
+mongoose.connect(uristring);
 mongoose.connection.on('error', function() {
   console.info('Mongodb server no esta activado. sudo service mongod start');
 });
@@ -61,5 +67,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
+app.listen(8080, function() {
+  console.log('Express server listening on port ' + '8080');
+});
 
 module.exports = app;
