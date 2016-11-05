@@ -30,7 +30,9 @@ var uristring =
     process.env.MONGOHQ_URL ||
     'mongodb://localhost:27017/db';
 
-
+// The http server will listen to an appropriate port, or default to
+// port 5000.
+var theport = process.env.PORT || 5000;
 mongoose.Promise = global.Promise
 mongoose.connect(uristring);
 mongoose.connection.on('error', function() {
@@ -67,8 +69,8 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.listen(8080, function() {
-  console.log('Express server listening on port ' + '8080');
+app.listen(theport, function() {
+  console.log('Express server listening on port ' + theport);
 });
 
 module.exports = app;
