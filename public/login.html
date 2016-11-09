@@ -1,0 +1,90 @@
+<div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <div class="panel-title">Iniciar sesión</div>
+      <!-- <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Forgot password?</a></div>-->
+    </div>
+    <div style="padding-top:30px" class="panel-body">
+      <div id="login-alert" style="display:none" class="alert alert-danger col-sm-12"></div>
+      <form id="loginform" role="form" class="form-horizontal" name="log">
+        <div style="margin-bottom: 25px" class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+          <input ng-model="user.alias"  type="text" name="alias" placeholder="Usuario" class="form-control" required/>
+        </div>
+        <div style="margin-bottom: 25px"  class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+          <input ng-model="user.pass" ng-invalid="error"  type="password" name="pass" placeholder="password" class="form-control" required/>
+        </div>
+        <div class="alert alert-danger" ng-show="error" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          {{error}}
+        </div>
+        <div style="margin-top:10px" class="form-group">
+
+          <!-- Button-->
+          <div class="col-sm-12 controls">
+            <button id="btn-login" type="button" ng-click="login()" class="btn btn-success btn-lg" ng-disabled=" log.alias.$invalid || log.pass.$invalid || log.pass.$untouched && log.alias.$untouched ">Iniciar sesión</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12 control">
+            <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">No tienes cuenta!! <a href="#/login" ng-click="load()" onclick="$('#loginbox').hide(); $('#signupbox').show()"> Registrate aqui</a></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <div class="panel-title">Registro</div>
+      <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" ng-click="load()" href="#/login" onclick="$('#signupbox').hide(); $('#loginbox').show()" >Volver</a></div>
+    </div>
+    <div class="panel-body">
+      <form id="signupform" name="reg" role="form" class="form-horizontal">
+        <div class="form-group">
+          <label for="firstname" class="col-md-3 control-label">Nombre</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="user.nombre" name="nombre" placeholder="Nombre" class="form-control"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="lastname" class="col-md-3 control-label">Apellidos</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="user.apellidos" name="apellidos" placeholder="Apellidos" class="form-control"/>
+          </div>
+        </div>
+        <div class="form-group ">
+          <label for="email" class="col-md-3 control-label">Email</label>
+          <div class="col-md-9">
+            <input type="email" ng-model="user.email" name="email" placeholder="Email" class="form-control " id="inputSuccess"/>
+          </div>
+        </div>
+        <hr class="spartan"/>
+        <div class="form-group">
+          <label for="alias" class="col-md-3 control-label">Usuario</label>
+          <div class="col-md-9">
+            <input type="text" ng-model="user.alias" name="alias" placeholder="Usuario" class="form-control" required/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password" class="col-md-3 control-label">Contraseña</label>
+          <div class="col-md-9">
+            <input type="password" ng-model="user.pass" name="pass" placeholder="Password" class="form-control" required/>
+          </div>
+        </div>
+        <div class="alert alert-danger" ng-show="error" role="alert">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          {{error}}
+        </div>
+        <div class="form-group">
+          <!-- Button-->
+          <div class="col-md-offset-3 col-md-9">
+            <button id="btn-signup" type="submit" class="btn btn-info" ng-click="registrar()" ng-disabled=" reg.alias.$invalid || reg.pass.$invalid || reg.pass.$untouched && reg.alias.$untouched "><i class="icon-hand-right"></i>Registrar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

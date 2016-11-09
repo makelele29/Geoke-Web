@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var model_usu = require('../models/user.js');
-
 //GET - Devuelve los datos de todos los usuarios
 exports.findAll = function(req, res) {
  model_usu.find(function(err, result) {
@@ -61,17 +60,15 @@ exports.eliminar = function(req, res) {
     res.json(200,{mensaje: 'El usuario ha sido eliminado'});
   });
 
-
-
 };
 //POST - Te confirma si el usuario esta registrado
 exports.login = function(req, res) {
   model_usu.findOne({alias:req.body.alias, contraseña:req.body.pass},function(err,result){
     if(err) return res.json(500, { mensaje: 'Error en la Base de datos' });
-    if(result==null) return res.json(500, { mensaje: 'Necesita registrarse.' });
-    res.json(200,{mensaje: 'Inicio de sesión con '+req.body.alias});
+    if(result==null) return res.json(500, { mensaje: 'El usuario y/o la contraseña son incorrectos' });
+    	res.json(200,{user:result});
   });
 
 
-
 };
+

@@ -21,14 +21,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', routes);
 app.use('/api', api);
+app.get('/', function(req, res) {
+		res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+});
+
 // connect to our database
-var uristring =
-    process.env.MONGOLAB_URI ||
-    process.env.MONGOHQ_URL ||
-    'mongodb://localhost:27017/db';
+var uristring =process.env.MONGOHQ_URL || 'mongodb://localhost:27017/database';
 
 // The http server will listen to an appropriate port, or default to
 // port 5000.
@@ -45,29 +44,7 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-// error handlers
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
 
 app.listen(theport, function() {
   console.log('Express server listening on port ' + theport);
