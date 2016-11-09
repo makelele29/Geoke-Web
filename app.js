@@ -27,7 +27,7 @@ app.get('/', function(req, res) {
 });
 
 // connect to our database
-var uristring =process.env.MONGOHQ_URL || 'mongodb://localhost:27017/database';
+var uristring =process.env.MONGODB_URI || 'mongodb://localhost:27017/database';
 
 // The http server will listen to an appropriate port, or default to
 // port 5000.
