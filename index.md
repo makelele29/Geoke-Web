@@ -151,6 +151,51 @@ notifications:
 
 ```
 
-
-
 ***
+
+## Hito 3
+
+
+### Milestone
+
+[Ejercicios del tema 3](https://github.com/makelele29/Ejercicios-IV/milestone/3?closed=1)
+
+### Tema 3
+
+[Ejercicios](https://github.com/makelele29/Ejercicios-IV/blob/master/Tema%203.md)
+
+
+### Proyecto
+
+#### Desplegando a la nube: Platform as a Service
+
+El despliege lo he realizado en heroku, he creado un script para que la instalación de heroku sea más sencillo, por si alguien quisiera desplegarlo.
+
+```bash
+
+
+#!/bin/bash
+sudo apt-get install wget
+wget -O- https://toolbelt.heroku.com/install-ubuntu.sh | sh   # descargar herramienta heroku CLI
+cd ..
+sudo heroku login
+sudo heroku apps:create --region eu geoke
+sudo heroku addons:create mongolab:sandbox
+echo "En username darle a enter y en password añadir el codigo del token"
+sudo heroku auth:token
+git push heroku master
+sudo heroku ps:scale web=1
+
+```
+Para que la subida a heroku sea más fácil he añadido en heroku la subida automática desde github siempre y cuando supere la CI.
+
+![](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202016-11-09%2020-00-40_zpsisc2fmsn.png)
+
+
+He añadido una parte visual de la web utilizando Angularjs y haciendo peticiones ajax para login y el registro.
+
+![](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202016-11-10%2001-00-22_zpsvmjsr02w.png)
+
+Después de añadir un usuario podemos ver en __api/usuario__ el usuario añadido
+
+![](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202016-11-10%2001-03-06_zpsuiehqsd0.png)
