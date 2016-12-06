@@ -4,7 +4,7 @@ FROM node:latest
 MAINTAINER JAVIER CASTILLO PALOMO  <jacastillo@correo.ugr.es>
 
 # Adds files from the host file system into the Docker container.
-ADD . /routers /models
+ADD . /routes /models
 
 # Sets the current working directory for subsequent instructions
 WORKDIR /routes /models
