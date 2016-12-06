@@ -3,7 +3,7 @@
 ***
 
 [![Build Status](https://travis-ci.org/makelele29/Geoke-Web.svg?branch=master)](https://travis-ci.org/makelele29/Geoke-Web)
-[![Heroku Deploy](https://www.herokucdn.com/deploy/button.svg)](https://geoke.herokuapp.com/) 
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/makelele29/Geoke-Web)
 
 ### Descripción
 
