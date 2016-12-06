@@ -25,7 +25,7 @@ app.use('/api', api);
 app.get('/', function(req, res) {
 		res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
-var mongo='mongodb://' + ip.address() + ':27017/database';
+var mongo='mongodb://' + process.env.MONGODB_PORT_27017_TCP_ADDR + ':' + process.env.MONGODB_PORT_27017_TCP_PORT + '/db';
 // connect to our database
 var uristring =process.env.MONGODB_URI || mongo;
 console.log(mongo);
