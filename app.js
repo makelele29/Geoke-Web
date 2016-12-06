@@ -28,7 +28,7 @@ app.get('/', function(req, res) {
 var mongo='mongodb://' + process.env.MONGODB_PORT_27017_TCP_ADDR + ':' + process.env.MONGODB_PORT_27017_TCP_PORT + '/db';
 // connect to our database
 var uristring =process.env.MONGODB_URI || mongo;
-console.log(mongo);
+
 // The http server will listen to an appropriate port, or default to
 // port 5000.
 var theport = process.env.PORT || 8080;
