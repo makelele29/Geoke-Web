@@ -25,14 +25,14 @@ app.use('/api', api);
 app.get('/', function(req, res) {
 		res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
-var mongo='mongodb://' + ip.address() + ':27017/database'
+var mongo='mongodb://' + ip.address() + ':27017/database';
 // connect to our database
-var uristring =process.env.MONGODB_URI || 'mongodb://localhost:27017/database';
-
+var uristring =process.env.MONGODB_URI || mongo;
+console.log(mongo);
 // The http server will listen to an appropriate port, or default to
 // port 5000.
 var theport = process.env.PORT || 8080;
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise;
 mongoose.connect(uristring);
 mongoose.connection.on('error', function() {
   console.info('Mongodb server no esta activado. sudo service mongod start');
@@ -47,7 +47,7 @@ app.use(function(req, res, next) {
 
 
 app.listen(theport, function() {
-  console.log('Express server ' + ip.address() + ' listening on port 8080');
+  console.log('Express server ' + ip.address() + ' listening on port '+ theport);
 });
 
 module.exports = app;
