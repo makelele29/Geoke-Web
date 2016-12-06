@@ -7,7 +7,7 @@ MAINTAINER JAVIER CASTILLO PALOMO  <jacastillo@correo.ugr.es>
 ADD . /routers /models
 
 # Sets the current working directory for subsequent instructions
-WORKDIR /routers /models
+WORKDIR /routes /models
 
 RUN npm install
 
