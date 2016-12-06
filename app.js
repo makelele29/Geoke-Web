@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var mongoose     = require('mongoose');
 var routes = require('./routes/index');
 var api = require('./routes/api');
-
+var ip = require('ip');
 var app = express();
 
 // view engine setup
@@ -27,11 +27,11 @@ app.get('/', function(req, res) {
 });
 
 // connect to our database
-var uristring =process.env.MONGODB_URI || 'mongodb://localhost:27017/database';
+var uristring =process.env.MONGODB_URI || 'mongodb://' + process.env.MONGODB_PORT_27017_TCP_ADDR + ':' + process.env.MONGODB_PORT_27017_TCP_PORT + '/database';
 
 // The http server will listen to an appropriate port, or default to
 // port 5000.
-var theport = process.env.PORT || 5000;
+var theport = process.env.PORT || 8080;
 mongoose.Promise = global.Promise
 mongoose.connect(uristring);
 mongoose.connection.on('error', function() {
@@ -47,7 +47,7 @@ app.use(function(req, res, next) {
 
 
 app.listen(theport, function() {
-  console.log('Express server listening on port ' + theport);
+   console.log('Express server ' + ip.address() + ' listening on port 8080');
 });
 
 module.exports = app;
