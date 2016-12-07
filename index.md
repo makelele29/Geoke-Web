@@ -202,7 +202,6 @@ Después de añadir un usuario podemos ver en __api/usuario__ el usuario añadid
 
 ## Hito 4
 
-
 ### Milestone
 
 [Ejercicios del tema 3](https://github.com/makelele29/Ejercicios-IV/milestone/4?closed=1)
@@ -221,3 +220,50 @@ Después de añadir un usuario podemos ver en __api/usuario__ el usuario añadid
 Para ver como sincronizar DockerHub con nuestro GitHub es bastante simple. Antes de nada hay que crearse una cuenta en dockerhub.
 
 Para asociarla con github tenemos que clickar sobre Create y elegimos la opción Create Automated Build. Nos da la opción de crearla mediante GitHub y deberemos elegir el repositorio de nuestro proyecto.
+
+[Mi cuenta de DockerHub](https://hub.docker.com/r/makelele29/geoke-web/)
+
+Para ello ha sido necesario crearse un Dockerfile en el proyecto:
+
+``` Dockerfile
+
+FROM node:latest
+
+#Autor
+MAINTAINER JAVIER CASTILLO PALOMO  <jacastillo@correo.ugr.es>
+
+# Adds files from the host file system into the Docker container.
+ADD . /routes
+ADD . /models
+
+# Sets the current working directory for subsequent instructions
+WORKDIR /routes
+WORKDIR /models
+
+RUN npm install
+
+
+
+#expose a port to allow external access
+EXPOSE 8080
+
+
+CMD ["npm", "start"]
+
+```
+
+###### Instalación del contenedor
+
+Instalar [docker](https://docs.docker.com/engine/installation/)
+
+Hay dos maneras de crear el contenedor:
+
+- __Local__: Se debera clonar o copiar el repositio y ejecutar el siguiente script.
+
+      ./script/docker.sh
+
+- __DockerHub__: Solo se tendra que ejecutar estos comandos.
+
+      docker run -d --name mongoDB mongo
+      docker pull makelele29/geoke-web
+      docker run --link=mongoDB:mongodb -it makelele29/geoke-web
