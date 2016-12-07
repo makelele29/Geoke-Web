@@ -62,5 +62,7 @@ Hay dos maneras de crear el contenedor:
 - __DockerHub__: Solo se tendrá que ejecutar estos comandos.
 
       docker run -d --name mongoDB mongo
+
       docker pull makelele29/geoke-web
+      
       docker run --link=mongoDB:mongodb -it makelele29/geoke-web
