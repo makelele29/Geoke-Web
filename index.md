@@ -199,3 +199,25 @@ He añadido una parte visual de la web utilizando Angularjs y haciendo peticione
 Después de añadir un usuario podemos ver en __api/usuario__ el usuario añadido
 
 ![](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202016-11-10%2001-03-06_zpsuiehqsd0.png)
+
+## Hito 4
+
+
+### Milestone
+
+[Ejercicios del tema 3](https://github.com/makelele29/Ejercicios-IV/milestone/4?closed=1)
+
+[Hito 4](https://github.com/makelele29/Geoke-Web/issues/19)
+
+### Tema 4
+
+[Ejercicios](https://github.com/makelele29/Ejercicios-IV/blob/master/Tema%204.md)
+
+
+### Proyecto
+
+#### Técnicas de virtualización Contenedores para pruebas
+
+Para ver como sincronizar DockerHub con nuestro GitHub es bastante simple. Antes de nada hay que crearse una cuenta en dockerhub.
+
+Para asociarla con github tenemos que clickar sobre Create y elegimos la opción Create Automated Build. Nos da la opción de crearla mediante GitHub y deberemos elegir el repositorio de nuestro proyecto.
