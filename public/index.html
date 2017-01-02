@@ -1,4 +1,8 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
 <head>
+    <base href="/">
+
    <!-- Optional theme-->
    <!-- Latest compiled and minified CSS-->
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -11,17 +15,46 @@
 
  </head>
  <body>
-   <div class="container" ng-app="myApp">
+   <div class="container" >
      <header class="row">
        <center>
          <div class="col-md-12"><img src="/images/icono3.png" class="img-responsive"></div>
        </center>
      </header>
-     <hr class="spartan"/>
-     <div ng-view></div>
+     <nav ng-show="mostrarUsu" class="navbar navbar-inverse">
+       <div class="container-fluid" ng-controller="navCtrl">
+         <div class="navbar-header">
+           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+           </button>
+         <center><img src="/images/logo.png" width="50px" height="50px" alt="..." class="img-circle">
+         </center></div>
+         <div class="collapse navbar-collapse" id="myNavbar">
+           <ul class="nav navbar-nav">
+             <li ><a href="/gymkhanas">Gymkhanas</a></li>
+             <li ><a href="#">Datos del Juego</a></li>
+             <li ><a href="#">Gestionar Usuarios</a></li>
+
+           </ul>
+           <ul class="nav navbar-nav navbar-right">
+              <li><a ng-click="logout();">Cerrar sesión </a></li>
+
+            </ul>
+         </div>
+       </div>
+     </nav>
+     <hr ng-hide="mostrarUsu" class="spartan"/>
+     <div ng-view id=vista></div>
 
    </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.js"></script>
    <script src="/javascripts/angular.js"></script>
+
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBoRamzo5zrkzMKfopU6DV-pcqYYwYqpbY&libraries=places"
+         async defer>
+     </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <!-- Latest compiled and minified JavaScript-->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

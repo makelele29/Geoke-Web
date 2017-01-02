@@ -1,3 +1,4 @@
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -8,8 +9,10 @@ var mongoose     = require('mongoose');
 var routes = require('./routes/index');
 var api = require('./routes/api');
 var ip= require('ip')
+var passport = require('passport');
 var app = express();
-
+var config=require('./config/config')
+require('./config/passport');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -21,19 +24,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
 app.use('/api', api);
 app.get('/', function(req, res) {
 		res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
-var mongo='mongodb://' + process.env.MONGODB_PORT_27017_TCP_ADDR + ':' + process.env.MONGODB_PORT_27017_TCP_PORT + '/db';
-// connect to our database
-var uristring =process.env.MONGODB_URI || mongo;
 
-// The http server will listen to an appropriate port, or default to
-// port 5000.
-var theport = process.env.PORT || 8080;
 mongoose.Promise = global.Promise;
-mongoose.connect(uristring);
+mongoose.connect(config.bd_Mongo);
 mongoose.connection.on('error', function() {
   console.info('Mongodb server no esta activado. sudo service mongod start');
 });
@@ -44,10 +42,16 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+// [SH] Catch unauthorised errors
+app.use(function (err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401);
+    res.json({"message" : err.name + ": " + err.message});
+  }
+});
 
-
-app.listen(theport, function() {
-  console.log('Express server ' + ip.address() + ' listening on port '+ theport);
+app.listen(config.port, function() {
+  console.log('Express server ' + ip.address() + ' listening on port '+ config.port);
 });
 
 module.exports = app;

@@ -1,7 +1,6 @@
-var passport = require('passport');
 var mongoose = require('mongoose');
 var model_usu = require('../models/user.js');
-
+var passport = require('passport');
 //GET - Devuelve los datos de todos los usuarios
 exports.findAll = function(req, res) {
  model_usu.find(function(err, result) {
@@ -13,21 +12,11 @@ exports.findAll = function(req, res) {
 
 //GET - Devuelve los datos de un usuario especifico
 exports.findByAlias = function(req, res) {
-  // Si el usuario no tiene ID existe no te deja acceder
-  if (!req.payload._id) {
-    res.status(401).json({
-      "message" : "UnauthorizedError: private profile"
-    });
-  } else {
-    // En caso de acceso
-    model_usu
-      .findById(req.payload._id)
-      .exec(function(err, user) {
-        console.log(user.alias)
-        res.status(200).json(user);
-      })
-    }
-
+  model_usu.findOne({alias:req.params.alias},function(err, result){
+    if(err) return res.json(500, { mensaje:err.message});
+    if(result==null) return res.json(500, { mensaje: 'No hay ningun usuario con ese alias' });
+    res.json(200,result);
+  });
 
 };
 
@@ -40,7 +29,8 @@ exports.add = function(req, res) {
    apellidos: req.body.apellidos
  });
 
- usu.setPassword(req.body.password);
+
+ usu.setPassword(req.body.pass);
 
  usu.save(function(err) {
     if(err) return res.json(500,{mensaje: 'El usuario ya esta registrado'});
@@ -60,7 +50,7 @@ exports.update = function(req, res) {
     if(err) return res.json(501, { mensaje:err.message});
     if(usu==null) return res.json(502, { mensaje: 'No hay ningun usuario con ese alias' });
     if(req.body.nombre)usu.nombre=req.body.nombre;
-    if(req.body.password)usu.setPassword(req.body.password);
+    if(req.body.pass)usu.setPassword(req.body.pass);
     if(req.body.apellidos)usu.apellidos=req.body.apellidos;
     usu.save(function(err,result){
       if(err) return res.json(503,{mensaje:'Hubo un problema al actualizar los datos personales'});
@@ -68,6 +58,7 @@ exports.update = function(req, res) {
     });
 
   });
+
 
 };
 
@@ -80,29 +71,38 @@ exports.eliminar = function(req, res) {
   });
 
 };
-
+//POST - Te confirma si el usuario esta registrado
 exports.login = function(req, res) {
 
-  passport.authenticate('local', function(err, user, info){
-      var token;
+   /*model_usu.findOne({alias:req.body.alias},function(err,result){
+   	if(err) return res.json(500, { mensaje: 'Error en la Base de datos' });
+   	if(result==null) return res.json(500, { mensaje: 'El usuario y/o la password son incorrectos' });
+		if (result.validPassword(req.body.pass))
+    		res.json(200,{token:result.generateJwt()});
+		else
+			res.json(500, { mensaje: 'El usuario y/o la password son incorrectos' })
+  });*/
+ passport.authenticate('local', function(err, user, info){
+    var token;
 
-      // Si passport tiene algun error
-      if (err) {
-        res.status(404).json(err);
-        return;
-      }
+    // If Passport throws/catches an error
+    if (err) {
+      res.status(404).json(err);
+      return;
+    }
 
-      // Si el usuario existe
-      if(user){
-        token = user.generateJwt();
-        res.status(200);
-        res.json({
-          "token" : token
-        });
-      } else {
-        // Si el usuario no existe
-        res.status(401).json(info);
-      }
-    })(req, res);
+    // If a user is found
+    if(user){
+      token = user.generateJwt();
+      res.status(200);
+      res.json({
+        "token" : token
+      });
+    } else {
+      // If user is not found
+      res.status(401).json(info);
+    }
+  })(req, res);
 
-  };
+
+};
