@@ -1,7 +1,7 @@
 var mongoose     = require('mongoose');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
-var config=require('./config/config')
+var config=require('../config/config')
 // create a schema
 var userSchema = new mongoose.Schema({
   nombre: String,
@@ -31,6 +31,6 @@ userSchema.methods.generateJwt = function() {
     nombre: this.nombre,
 	 apellidos: this.apellidos,
     exp: parseInt(expiry.getTime() / 1000),
-  }, config.clave); 
+  }, config.clave);
 };
 module.exports= mongoose.model('usuarios', userSchema);
