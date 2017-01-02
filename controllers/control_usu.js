@@ -23,7 +23,6 @@ exports.findByAlias = function(req, res) {
     model_usu
       .findById(req.payload._id)
       .exec(function(err, user) {
-        console.log(user.alias)
         res.status(200).json(user);
       })
     }

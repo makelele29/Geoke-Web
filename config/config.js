@@ -6,5 +6,6 @@ if(typeof process.env.MONGODB_PORT_27017_TCP_ADDR !== 'undefined'){
 module.exports = {
 'port': process.env.PORT || 8080,
 'bd_Mongo': process.env.MONGODB_URI || this.database,
-'clave': process.env.CLAVE || "1234"
+'clave': process.env.CLAVE || "1234",
+'user': 'payload'
 };

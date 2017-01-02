@@ -4,12 +4,13 @@ var chaiHttp = require('chai-http');
 var server = require('../app');
 var should = chai.should();
 
+
 chai.use(chaiHttp);
 describe('Test de usuarios (Mongodb)', function() {
   it('Deberia añadir Javi con contraseña 12345a',function(done){
     chai.request(server)
     .post('/api/usuario')
-    .send({nombre:'javier', alias: 'Javi',pass: '12345a',apellidos:'Castillo'})
+    .send({nombre:'javier', alias: 'Javi',password: '12345a',apellidos:'Castillo'})
     .end(function(err, res){
       res.should.have.status(200);
       res.should.be.json;
@@ -21,7 +22,7 @@ describe('Test de usuarios (Mongodb)', function() {
   it('Deberia no añadir otro Javi con contraseña 12345a',function(done){
     chai.request(server)
     .post('/api/usuario')
-    .send({nombre:'javier', alias: 'Javi',pass: '12345a',apellidos:'Castillo'})
+    .send({nombre:'javier', alias: 'Javi',password: '12345a',apellidos:'Castillo'})
     .end(function(err, res){
       res.should.have.status(500);
       res.should.be.json;
@@ -33,7 +34,7 @@ describe('Test de usuarios (Mongodb)', function() {
   it('Deberia iniciar sesion con Javi t contraseña 12345a',function(done){
     chai.request(server)
     .post('/api/login')
-    .send({ alias: 'Javi',pass: '12345a'})
+    .send({ alias: 'Javi',password: '12345a'})
     .end(function(err, res){
       res.should.have.status(200);
       res.should.be.json;
@@ -44,35 +45,18 @@ describe('Test de usuarios (Mongodb)', function() {
   it('Deberia no iniciar sesion con Jav y contraseña 12345',function(done){
       chai.request(server)
       .post('/api/login')
-      .send({ alias: 'Jav',pass: '12345'})
+      .send({ alias: 'Jav',password: '12345'})
       .end(function(err, res){
-        res.should.have.status(500);
+        res.should.have.status(401);
         res.should.be.json;
         done();
       });
   });
-  it('Deberia mostrar al usuario con alias Javi',function(done){
-      chai.request(server)
-      .get('/api/usuario/'+'Javi')
-      .end(function(err, res){
-        res.should.have.status(200);
-        res.should.be.json;
-        done();
-      });
-  });
-  it('Deberia no mostrar al usuario con alias Pepe',function(done){
-      chai.request(server)
-      .get('/api/usuario/'+'Pepe')
-      .end(function(err, res){
-        res.should.have.status(500);
-        res.should.be.json;
-        done();
-      });
-  });
+
   it('Deberia actualizar a Javi y cambiar la contraseña a IV',function(done){
       chai.request(server)
       .put('/api/usuario/'+'Javi')
-      .send({pass:'IV'})
+      .send({password:'IV'})
       .end(function(err, res){
         res.should.have.status(200);
         res.should.be.json;

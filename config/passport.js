@@ -10,7 +10,7 @@ passport.use(new LocalStrategy({
     passwordField: 'password'
   },
   function(username, password, done) {
-    console.log("passport")
+
 
       model_usu.findOne({ alias:username }, function (err, user) {
         if (err) { return done(err); }

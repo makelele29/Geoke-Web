@@ -2,9 +2,10 @@ var express = require('express');
 var router = express.Router();
 var UsuCtrl= require('../controllers/control_usu');
 var jwt = require('express-jwt');
+var config=require('../config/config')
 var auth = jwt({
-  secret: 'MY_SECRET',
-  userProperty: 'payload'
+  secret: config.clave,
+  userProperty: config.user
 });
 
 /* GET users listing. */
@@ -15,11 +16,11 @@ router.route('/usuario')
   .post(UsuCtrl.add)
   .get(UsuCtrl.findAll);
 
-/*router.route('/usuario/:alias',auth)
+router.route('/usuario/:alias',auth)
  .get(UsuCtrl.findByAlias)
  .put(UsuCtrl.update)
  .delete(UsuCtrl.eliminar);
-*/
+
 router.route("/login")
   .post(UsuCtrl.login);
 
