@@ -21,12 +21,12 @@
         <div style="margin-top:10px" class="form-group">
 
           <!-- Button-->
-          <div class="col-md-12 col-xs-12">
+          <div class="col-sm-12">
             <button id="btn-login" type="button" ng-click="login()" class="btn btn-success btn-lg" ng-disabled=" log.alias.$invalid || log.pass.$invalid || log.pass.$untouched && log.alias.$untouched ">Iniciar sesión</button>
           </div>
         </div>
         <div class="form-group">
-          <div class="col-md-12 col-xs-12">
+          <div class="col-md-12">
             <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">No tienes cuenta!! <a href="login" ng-click="load()" onclick="$('#loginbox').hide(); $('#signupbox').show()"> Registrate aqui</a></div>
           </div>
         </div>
@@ -34,7 +34,7 @@
     </div>
   </div>
 </div>
-<div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-xs-6 col-xs-offset-3">
+<div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
   <div class="panel panel-info">
     <div class="panel-heading">
       <div class="panel-title">Registro</div>
@@ -43,33 +43,33 @@
     <div class="panel-body">
       <form id="signupform" name="reg" role="form" class="form-horizontal">
         <div class="form-group">
-          <label for="firstname" class="col-md-3 col-xs-3 control-label">Nombre</label>
-          <div class="col-md-9 col-xs-9">
+          <label for="firstname" class="col-md-3 control-label">Nombre</label>
+          <div class="col-md-9">
             <input type="text" ng-model="user.nombre" name="nombre" placeholder="Nombre" class="form-control"/>
           </div>
         </div>
         <div class="form-group">
-          <label for="lastname" class="col-md-3 col-xs-3 control-label">Apellidos</label>
-          <div class="col-md-9 col-xs-9">
+          <label for="lastname" class="col-md-3 control-label">Apellidos</label>
+          <div class="col-md-9">
             <input type="text" ng-model="user.apellidos" name="apellidos" placeholder="Apellidos" class="form-control"/>
           </div>
         </div>
         <div class="form-group ">
-          <label for="email" class="col-md-3 col-xs-3 control-label">Email</label>
-          <div class="col-md-9 col-xs-9">
+          <label for="email" class="col-md-3 control-label">Email</label>
+          <div class="col-md-9">
             <input type="email" ng-model="user.email" name="email" placeholder="Email" class="form-control " id="inputSuccess"/>
           </div>
         </div>
         <hr class="spartan"/>
         <div class="form-group">
-          <label for="alias" class="col-md-3 col-xs-3 control-label">Usuario</label>
-          <div class="col-md-9 col-xs-9">
+          <label for="alias" class="col-md-3 control-label">Usuario</label>
+          <div class="col-md-9">
             <input type="text" ng-model="user.alias" name="alias" placeholder="Usuario" class="form-control" required/>
           </div>
         </div>
         <div class="form-group">
-          <label for="password" class="col-md-3 col-xs-3 control-label">Contraseña</label>
-          <div class="col-md-9 col-xs-9">
+          <label for="password" class="col-md-3 control-label">Contraseña</label>
+          <div class="col-md-9">
             <input type="password" ng-model="user.password" name="pass" placeholder="Password" class="form-control" required/>
           </div>
         </div>
@@ -80,7 +80,7 @@
         </div>
         <div class="form-group">
           <!-- Button-->
-          <div class="col-md-offset-3 col-md-9 col-xs-offset-3 col-xs-9">
+          <div class="col-md-offset-3 col-md-9">
             <button id="btn-signup" type="submit" class="btn btn-info" ng-click="registrar()" ng-disabled=" reg.alias.$invalid || reg.pass.$invalid || reg.pass.$untouched && reg.alias.$untouched "><i class="icon-hand-right"></i>Registrar</button>
           </div>
         </div>
