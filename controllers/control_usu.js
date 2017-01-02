@@ -32,7 +32,7 @@ exports.findByAlias = function(req, res) {
 
 //POST - Insertar nuevo usuario
 exports.add = function(req, res) {
-console.log(req.body)
+
  var usu = new model_usu({
    nombre: req.body.nombre,
    alias: req.body.alias,

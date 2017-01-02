@@ -256,7 +256,7 @@ app.controller('userCtrl', ['$rootScope', '$scope', '$localStorage','$http','$wi
 
     }
     $scope.registrar=function(){
-        alert("hola")
+        
         $http.post('/api/usuario',$scope.user)
                .success(function(data) {
                  $scope.error=false;
