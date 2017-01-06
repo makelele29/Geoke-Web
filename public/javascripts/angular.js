@@ -1,13 +1,13 @@
 var app = angular.module("myApp", ['ngRoute','ngStorage']);
 
-app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider',
+ function ($routeProvider, $locationProvider) {
 
     $routeProvider.
    when('/login', {
       templateUrl: 'login.html',
         controller : 'userCtrl'
    }).
-
    when('/', {
       templateUrl: 'carrousel.html'
    }).
@@ -24,14 +24,17 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $lo
       controller : 'misionesCtrl'
    }).
    otherwise({
-      redirectTo: 'login.html',
-        controller : 'userCtrl'
+      redirectTo: '/login'
    });
-   // use the HTML5 History API
-      $locationProvider.html5Mode(true);
+   $locationProvider.html5Mode({
+     enabled: true,
+     requireBase: false
+   });
+   $locationProvider.hashPrefix('!');
 
 }]);
-
+//======================= SERVICIOS =======================
+//------------------------- AUTENTIFICACION -------------------------
 app.service('authentication',['$http', '$window',function ($http, $window) {
   var saveToken = function (token) {
     $window.localStorage['mean-token'] = token;
@@ -70,7 +73,6 @@ app.service('authentication',['$http', '$window',function ($http, $window) {
     }
   };
 
-
   logout = function() {
     $window.localStorage.removeItem('mean-token');
   };
@@ -84,6 +86,7 @@ app.service('authentication',['$http', '$window',function ($http, $window) {
   };
 
 }])
+//------------------------- MAPA GOOGLE -------------------------
 app.service('Map', ['$window',function($window) {
   var infowindow
   var map
@@ -173,21 +176,21 @@ app.service('Map', ['$window',function($window) {
   }
   this.addMarker = function(markers,misiones) {
 
-          var marker = new google.maps.Marker({
-              map: this.map(),
-              position: getPos(),
-              animation: google.maps.Animation.DROP,
-              title: 'Misión ' + misiones.length,
-              info: '<div><div class="text-center"><h6>Misión '+misiones.length+'<h6></div>'+
-              '<div class="text-center"><h8>Pregunta: '+misiones[misiones.length-1].pregunta+'<h8><hr></div>'+
-              '<div>'+
-              '<center><button type="button" class="btn btn-primary btn-circle" ng-click="modificar('+misiones.length+');"><i class="glyphicon glyphicon-pencil"></i></button>'+
-              '<button  class="btn btn-danger btn-circle" ng-click="markRemove('+misiones.length+');"><i class="glyphicon glyphicon-remove"></i></button>'+
-              '</center></div></div>'
-            });
+      var marker = new google.maps.Marker({
+          map: this.map(),
+          position: getPos(),
+          animation: google.maps.Animation.DROP,
+          title: 'Misión ' + misiones.length,
+          info: '<div><div class="text-center"><h6>Misión '+misiones.length+'<h6></div>'+
+          '<div class="text-center"><h8>Pregunta: '+misiones[misiones.length-1].pregunta+'<h8><hr></div>'+
+          '<div>'+
+          '<center><button type="button" class="btn btn-primary btn-circle" ng-click="modificar('+misiones.length+');"><i class="glyphicon glyphicon-pencil"></i></button>'+
+          '<button  class="btn btn-danger btn-circle" ng-click="markRemove('+misiones.length+');"><i class="glyphicon glyphicon-remove"></i></button>'+
+          '</center></div></div>'
+        });
 
-            misiones[misiones.length-1].geo=getPos();
-            markers.push(marker)
+        misiones[misiones.length-1].geo=getPos();
+        markers.push(marker)
 
       }
       this.modiMarker=function(marker,index,mision){
@@ -202,6 +205,7 @@ app.service('Map', ['$window',function($window) {
 
 
 }]);
+////======================= EN TIEMPO DE EJECUCION =======================
 app.run(['$rootScope', '$location', 'authentication',function ($rootScope, $location, authentication) {
   $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
     if(authentication.isLoggedIn()){
@@ -217,7 +221,10 @@ app.run(['$rootScope', '$location', 'authentication',function ($rootScope, $loca
     }
   });
 }])
-app.controller('profileCtrl', ['$rootScope', '$scope', '$localStorage','$http','$window', 'authentication', function($rootScope, $scope, $localStorage,$http,$window, authentication) {
+////======================= CONTROALDORES =======================
+//------------------------- PERFIL -------------------------
+app.controller('profileCtrl', ['$rootScope', '$scope', '$localStorage','$http','$window', 'authentication',
+ function($rootScope, $scope, $localStorage,$http,$window, authentication) {
 
   if(authentication.isLoggedIn()){
       $scope.show=true;
@@ -229,8 +236,9 @@ app.controller('profileCtrl', ['$rootScope', '$scope', '$localStorage','$http','
 
 
 }]);
-
-app.controller('userCtrl', ['$rootScope', '$scope', '$localStorage','$http','$window', 'authentication',function($rootScope, $scope, $localStorage,$http,$window,authentication) {
+//------------------------- USUARIO -------------------------
+app.controller('userCtrl', ['$rootScope', '$scope', '$localStorage','$http','$window', 'authentication',
+function($rootScope, $scope, $localStorage,$http,$window,authentication) {
 
 
   $scope.load=function(){
@@ -256,7 +264,7 @@ app.controller('userCtrl', ['$rootScope', '$scope', '$localStorage','$http','$wi
 
     }
     $scope.registrar=function(){
-        
+
         $http.post('/api/usuario',$scope.user)
                .success(function(data) {
                  $scope.error=false;
@@ -269,13 +277,16 @@ app.controller('userCtrl', ['$rootScope', '$scope', '$localStorage','$http','$wi
       }
 
 }]);
-app.controller('misionesCtrl', ['$scope','Map','$compile','authentication',function($scope, Map,$compile,authentication) {
+//------------------------- MISIONES -------------------------
+app.controller('misionesCtrl', ['$scope','Map','$compile','authentication', '$location', '$anchorScroll',
+function($scope, Map,$compile,authentication, $location, $anchorScroll) {
 
   var misiones=[]
   var markers=[]
   var index
-        $scope.mision={pregunta:'',respuesta1:'',respuesta2:'',respuesta3:'',respuesta4:'',correcta:1,geo:""}
-
+  $scope.mision={pregunta:'',respuesta1:'',respuesta2:'',respuesta3:'',respuesta4:'',correcta:1,geo:""}
+  $scope.showMisiones=false
+  $scope.showGymkhana=true
   $scope.guardar=function(){
     if($('#guardar').text()=='Guardar'){
 
@@ -332,17 +343,24 @@ app.controller('misionesCtrl', ['$scope','Map','$compile','authentication',funct
     var gymkhana={nombre:$scope.gymkhana.nombre,fechaIni:$scope.gymkhana.fechaIni,fechaFin:$scope.gymkhana.fechaFin,misiones:misiones}
     alert(JSON.stringify(gymkhana))
   }
+
   $scope.mostrarMap=function(){
+    $scope.showGymkhana=false
     $scope.showMisiones=true
-    Map.init()
+
+
+     Map.init()
+
   }
 }]);
+//------------------------- GYMKHANAS -------------------------
 app.controller('gymkhanasCtrl', ['$scope','$location',function($scope,$location) {
   $scope.show=function(){
     $location.path("/misiones")
   }
 
 }]);
+//------------------------- NAVEGADOR -------------------------
 app.controller('navCtrl', ['$scope','$location','authentication',function($scope,$location,authentication) {
   $scope.logout=function(){
     authentication.logout();
