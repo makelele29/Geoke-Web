@@ -277,3 +277,58 @@ Hay dos maneras de crear el contenedor:
 ###### Instalación con DockerHub
 
 ![DockerHub](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202016-12-07%2002-01-51_zps6chzhqxs.png)
+
+## Hito 5
+
+
+### Milestone
+
+
+
+### Tema 5 y 6
+
+[Ejercicios 5](https://github.com/makelele29/Ejercicios-IV/blob/master/Tema%205.md)
+
+[Ejercicios 6](https://github.com/makelele29/Ejercicios-IV/blob/master/Tema%206.md)
+
+
+### Proyecto
+
+#### Diseño del soporte virtual para el despliegue de una aplicación
+
+
+Para el despliegue de la aplicación en IaaS, voy a usar Vagrant para la creación de máquinas virtuales, Ansible para el provisionamiento de dichas máquinas y las máquinas virtuales se crearán en una cuenta de Azure.
+
+##### Instalación de Vagrant
+
+Instalar [Vagrant](https://www.vagrantup.com/downloads.html)
+
+Instalamos el provisionador de Azure para Vagrant
+
+    vagrant plugin install vagrant-azure --plugin-version '2.0.0.pre1'
+
+##### Instalación y configuración de Azure
+
+Instalar Azure
+
+    npm install -g azure-cli
+
+El siguiente paso es loguearse y conseguir información de las credenciales de Azure, para ello el segundo comando es para el modo Gestión de Servicios:
+
+    azure login
+    azure config mode asm
+    azure account download
+
+Para importar el certificado debes darle al enlace que nos aparece y se descargara el certificado, ahora debemos usar:
+
+    azure account import <ruta del certificado>
+
+Lo siguiente que debemos hacer es generar los certificados que se van a subir a Azure:
+
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout azurevagrant.key -out azurevagrant.key
+    chmod 600 azurevagrant.key
+    openssl x509 -inform pem -in azurevagrant.key -outform der -out azurevagrant.cer
+
+Nos vamos a la página de [Azure](https://manage.windowsazure.com/) y en el panel de la izquierda nos vamos a configuración -> certificados de administración, le damos al boton de cargar que aparece abajo y añadimos el certificado creado arriba.
+
+![](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202017-01-26%2017-27-18_zpsu0grbyul.png)
