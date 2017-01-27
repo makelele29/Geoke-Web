@@ -332,3 +332,49 @@ Lo siguiente que debemos hacer es generar los certificados que se van a subir a 
 Nos vamos a la página de [Azure](https://manage.windowsazure.com/) y en el panel de la izquierda nos vamos a configuración -> certificados de administración, le damos al boton de cargar que aparece abajo y añadimos el certificado creado arriba.
 
 ![](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202017-01-26%2017-27-18_zpsu0grbyul.png)
+
+Creamos un archivo yml para las variables que vamos a usar en vagrant
+
+__vars.yml__
+
+```yml
+
+#Credenciales de azure
+
+# Ruta absoluta del certificado de azure, previamente generado
+mgmt_certificate_path: /path/to/azure_key.pem
+
+# id de la subscripción de azure, necesario para la creación de la MV                  
+subscription_id: XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
+
+# Datos de la máquina virtual que será creada
+
+# Nombre de la MV
+vm_name: nombre_maquina
+
+# Nombre de usuario de la MV
+vm_user: usuario_maquina
+
+# Contraseña de la MV
+vm_password: *******
+
+
+#Variables de entorno de la app
+# Clave secreta (encriptación del token)
+CLAVE: *******
+
+# URL de la base de datos postgres
+DATABASE_URL: postgres://<USER>:<PASSWORD>@<HOST>:<PORT>/<DBNAME>
+
+
+# Variable de entorno que indica que el entorno es de producción
+EN_PROD: 1
+
+
+# Dirección del servidor
+server_name: "{{ vm_name }}.cloudapp.net www.{{ vm_name }}.cloudapp.net"
+
+
+
+
+```
