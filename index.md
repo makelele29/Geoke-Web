@@ -278,12 +278,6 @@ Hay dos maneras de crear el contenedor:
 
 ![DockerHub](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202016-12-07%2002-01-51_zps6chzhqxs.png)
 
-## Hito 5
-
-
-### Milestone
-
-
 
 ### Tema 5 y 6
 
@@ -531,3 +525,5 @@ Para usarlo simplemente utilizamos el comando:
     fab vagrant@DNS_VM <funcion>
 
 Al ser remoto, con la opción -H indicamos el host remoto en el que realizar la acción.
+
+![](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202017-01-28%2021-04-09_zpsxxfpdttd.png)
