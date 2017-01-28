@@ -426,7 +426,7 @@ Vagrant.configure('2') do |config|
     azure.location = 'westeurope'
     azure.tcp_endpoints = '80:80'
     azure.vm_name = "Geoke"
-
+    azure.resource_group_name= "geoke-group"
     azure.tenant_id = ENV['AZURE_TENANT_ID']
     azure.client_id = ENV['AZURE_CLIENT_ID']
     azure.client_secret = ENV['AZURE_CLIENT_SECRET']
@@ -443,8 +443,6 @@ Vagrant.configure('2') do |config|
   end
 
 end
-
-
 ```
 
 ##### Instalación de la máquina virtual
