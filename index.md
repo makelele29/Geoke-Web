@@ -307,74 +307,156 @@ Instalamos el provisionador de Azure para Vagrant
 
     vagrant plugin install vagrant-azure --plugin-version '2.0.0.pre1'
 
-##### Instalación y configuración de Azure
+##### Ansible
 
-Instalar Azure
+###### Creación de variables
 
-    npm install -g azure-cli
+Por comodidad y por tenerlo más a mano me he creado un archivo __vars.yml__ para guardar algunas variables:
 
-El siguiente paso es loguearse y conseguir información de las credenciales de Azure, para ello el segundo comando es para el modo Gestión de Servicios:
-
-    azure login
-    azure config mode asm
-    azure account download
-
-Para importar el certificado debes darle al enlace que nos aparece y se descargara el certificado, ahora debemos usar:
-
-    azure account import <ruta del certificado>
-
-Lo siguiente que debemos hacer es generar los certificados que se van a subir a Azure:
-
-    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout azurevagrant.key -out azurevagrant.key
-    chmod 600 azurevagrant.key
-    openssl x509 -inform pem -in azurevagrant.key -outform der -out azurevagrant.cer
-
-Nos vamos a la página de [Azure](https://manage.windowsazure.com/) y en el panel de la izquierda nos vamos a configuración -> certificados de administración, le damos al boton de cargar que aparece abajo y añadimos el certificado creado arriba.
-
-![](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202017-01-26%2017-27-18_zpsu0grbyul.png)
-
-Creamos un archivo yml para las variables que vamos a usar en vagrant
-
-__vars.yml__
 
 ```yml
 
-#Credenciales de azure
+---
 
-# Ruta absoluta del certificado de azure, previamente generado
-mgmt_certificate_path: /path/to/azure_key.pem
+# Variables para el despliegue
+project_name: IV16-17
+project_repo: https://github.com/makelele29/Geoke-Web.git
+proyect_path: Geoke
 
-# id de la subscripción de azure, necesario para la creación de la MV                  
-subscription_id: XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX
+# Dependencias del sistema
+system_packages:
+  - build-essential
+  - npm
+  - nodejs-legacy
+  - git
+  - mongodb
 
-# Datos de la máquina virtual que será creada
+```
 
-# Nombre de la MV
-vm_name: nombre_maquina
+y nos hemos creado el provisionamiento de Ansible, el cual instalara los paquetes necesario, copiara nuestro repositorio y  instalar los módulos necesarios de la aplicación:
 
-# Nombre de usuario de la MV
-vm_user: usuario_maquina
+__playbook.yml__
 
-# Contraseña de la MV
-vm_password: *******
+```yml
 
+---
+- hosts: all
+  remote_user: vagrant
+  vars_files:
+    - vars.yml
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Instalar paquetes del sistema
+      apt: pkg={{ item }} update-cache=yes cache_valid_time=3600
+      with_items: "{{ system_packages }}"
 
-#Variables de entorno de la app
-# Clave secreta (encriptación del token)
-CLAVE: *******
+    - name: Descargar fuentes
+      git: repo={{project_repo}} dest={{proyect_path}} clone=yes force=yes
+    - name: Run npm install
+      npm: path={{proyect_path}}
 
-# URL de la base de datos postgres
-DATABASE_URL: postgres://<USER>:<PASSWORD>@<HOST>:<PORT>/<DBNAME>
+```
 
+Para evitar algunos errores durante el provisionamiento uso el archivo __ansible.cfg__
 
-# Variable de entorno que indica que el entorno es de producción
-EN_PROD: 1
+```cfg
 
+[ssh_connection]
+control_path = %(directory)s/%%h-%%p-%%r
 
-# Dirección del servidor
-server_name: "{{ vm_name }}.cloudapp.net www.{{ vm_name }}.cloudapp.net"
+```
+##### Configuracion Portal Azure
 
+Primero nos vamos a la web de [Azure](https://portal.azure.com/) y nos logueamos con nuestra cuenta.
 
+Una vez dentro creamos una aplicación, para ello nos vamos al panel de la izquierda y le damos a Azure Active Directory --> Registro de Aplicaciones --> Agregar.
+
+![Agregar](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202017-01-28%2012-00-56_zpsfdlijdph.png)
+
+La URL de inicio de sesión se pone una cualquiera por ahora y mas adelante se cambiaría a la de la maquina virtual.
+
+Una vez creada ya estará registrada, pues ahora debemos averiguar las siguientes variables:
+
+__AZURE_CLIENT_ID__: Entramos dentro de la aplicación que hemos creado y copiamos el id de la aplicación.
+
+__AZURE_CLIENT_SECRET__: En el mismo sitio que estamos en el panel de la derecha le damos a claves. Dentro le definimos un nombre y una duración y al guardar nos aparecerá la clave que debemos copiar.
+
+__AZURE_TENANT_ID__: Esta en Azure Active Directory --> Propiedad, el que pone id de directorio.
+
+__AZURE_SUBSCRIPTION_ID__: Esta en Más servicios -> Suscripciones, una vez allí solo debemos copiar el id de la suscripción que tengamos, siempre y cuando esa suscripción tenga habilitada la creación de máquinas virtuales.
+
+Exportamos las variables con los campos que hemos obtenido de Azure.
+
+```bash
+
+export AZURE_TENANT_ID="****************"
+export AZURE_CLIENT_ID="****************"
+export AZURE_CLIENT_SECRET="****************"
+export AZURE_SUBSCRIPTION_ID="****************"
+
+```
+
+Ahora debemos darle permisos a nuestra aplicación para que pueda crearse la máquina virtual desde Vagrant.
+
+En el panel de la izquierda abajo del todo Más servicios --> Suscripciones, allí accedemos a la suscripción que pusimos anteriormente, le damos a Control de acceso (IAM) --> Agregar.
+
+Nos creamos un rol de tipo Colaborador, ya que debe tener permisos para crear la máquina virtual y en agregar usuarios vamos a añadir nuestra aplicación antes creada en mi caso geoke pues la busco, la agrego y le damos a aceptar.
+
+![roles](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202017-01-28%2012-42-01_zpserj1ojaz.png)
+
+##### Configuración Vagrant
+
+Solo nos falta el fichero Vagrantfile que sera el encargado de crear la máquina virtual con la configuración que le especifiquemos.
+
+__Vagrantfile__
+
+```
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure('2') do |config|
+
+  config.vm.box = 'azure'
+  config.vm.box_url = 'https://github.com/msopentech/vagrant-azure/raw/master/dummy.box' #Caja base vacía
+  config.vm.network "private_network",ip: "192.168.11.4", virtualbox__intnet: "vboxnet0" #Ip privada
+  config.vm.hostname = "localhost"
+  config.vm.network "forwarded_port", guest: 80, host: 80
+
+  # use local ssh key to connect to remote vagrant box
+  config.vm.provider :azure do |azure, override|
+    config.ssh.private_key_path = '~/.ssh/id_rsa'
+    azure.vm_image_urn = 'canonical:UbuntuServer:16.04-LTS:16.04.201701130' #Imagen base del sistema
+    azure.vm_size = 'Basic_A0' #Tamaño (recursos) de la MV
+    azure.location = 'westeurope'
+    azure.tcp_endpoints = '80:80'
+    azure.vm_name = "Geoke"
+
+    azure.tenant_id = ENV['AZURE_TENANT_ID']
+    azure.client_id = ENV['AZURE_CLIENT_ID']
+    azure.client_secret = ENV['AZURE_CLIENT_SECRET']
+    azure.subscription_id = ENV['AZURE_SUBSCRIPTION_ID']
+  end
+
+  # Provisionar con ansible
+  config.vm.provision "ansible" do |ansible|
+    ansible.sudo = true
+    ansible.playbook = "playbook.yml"
+    ansible.verbose = "-vvvv"
+
+    ansible.host_key_checking = false
+  end
+
+end
 
 
 ```
+
+##### Instalación de la máquina virtual
+
+    vagrant up --provider=azure
+
+Si tuviesemos problemas con Ansible a la hora de provisionar la máquina se ejecutaría el siguiente comando, después de realizar modificaciones en Ansible.
+
+    vagrant provision
