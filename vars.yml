@@ -1,0 +1,14 @@
+---
+
+# Variables para el despliegue
+project_name: IV16-17
+project_repo: https://github.com/makelele29/Geoke-Web.git
+proyect_path: Geoke
+
+# Dependencias del sistema
+system_packages:
+  - build-essential
+  - npm
+  - nodejs-legacy
+  - git
+  - mongodb
