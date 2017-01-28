@@ -487,9 +487,12 @@ He añadido el uso de Fabric para el despliegue de la aplicación remotamente y 
 
 Las funciones que contiene el fichero son:
 
-run_app: para ejecutar la aplicación
-
-pull: para actualizar el código de la aplicación.
+- install: Para instalar el modulo forever
+- start: Para ejecutar la aplicación
+- test: Para ejecutar los test
+- stop: Para parar la aplicación
+- restart: Para reiniciar la aplicación
+- pull: Para actualizar el repositorio y reiniciar la aplicación
 
 __fabfile.py__
 
@@ -497,14 +500,25 @@ __fabfile.py__
 
 from fabric.api import run
 
-def run_app():
-	run('cd Geoke/')
-	run('sudo su')
-	run('export PORT="80"')
-	run('npm start')
+def install():
+	run('sudo npm install -g forever')
+
+def start():
+	run('cd ~/Geoke/ && export PORT="80" && sudo -E forever start app.js')
+
+def test():
+	run('cd ~/Geoke/ && npm test')
+
+def stop():
+	run('forever stopall')
+
+def restart():
+	run('forever restartall')
 
 def pull():
 	run('cd Geoke/ && sudo git pull')
+	restart()
+
 
 
 ```
@@ -514,6 +528,6 @@ Para usar Fabric es necesario instalarlo. Podemos hacerlo con apt-get.
 
 Para usarlo simplemente utilizamos el comando:
 
-    fabric [-H host_destino] <funcion>
+    fab vagrant@DNS_VM <funcion>
 
 Al ser remoto, con la opción -H indicamos el host remoto en el que realizar la acción.
