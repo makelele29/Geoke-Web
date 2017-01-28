@@ -278,6 +278,7 @@ Hay dos maneras de crear el contenedor:
 
 ![DockerHub](http://i1356.photobucket.com/albums/q726/Makelele_Junior/Captura%20de%20pantalla%20de%202016-12-07%2002-01-51_zps6chzhqxs.png)
 
+## Hito 5
 
 ### Tema 5 y 6
 
@@ -361,6 +362,7 @@ Para evitar algunos errores durante el provisionamiento uso el archivo __ansible
 control_path = %(directory)s/%%h-%%p-%%r
 
 ```
+
 ##### Configuracion Portal Azure
 
 Primero nos vamos a la web de [Azure](https://portal.azure.com/) y nos logueamos con nuestra cuenta.
