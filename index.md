@@ -303,6 +303,10 @@ Instalamos el provisionador de Azure para Vagrant
 
 ##### Ansible
 
+Instalar Ansible
+
+      sudo apt-get install ansible
+
 ###### Creación de variables
 
 Por comodidad y por tenerlo más a mano me he creado un archivo __vars.yml__ para guardar algunas variables:
@@ -361,6 +365,7 @@ Para evitar algunos errores durante el provisionamiento uso el archivo __ansible
 control_path = %(directory)s/%%h-%%p-%%r
 
 ```
+
 ##### Configuracion Portal Azure
 
 Primero nos vamos a la web de [Azure](https://portal.azure.com/) y nos logueamos con nuestra cuenta.
@@ -514,6 +519,7 @@ def pull():
 
 
 ```
+
 Para usar Fabric es necesario instalarlo. Podemos hacerlo con apt-get.
 
     sudo apt-get install fabric
