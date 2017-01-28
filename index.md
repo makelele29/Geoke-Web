@@ -460,3 +460,60 @@ end
 Si tuviesemos problemas con Ansible a la hora de provisionar la máquina se ejecutaría el siguiente comando, después de realizar modificaciones en Ansible.
 
     vagrant provision
+
+##### Configuración de puertos
+
+Para que la aplicación se vea en nuestra web debemos abrirle el puerto 80 en Azure.
+
+En el panel de la izquierda le damos a Todos los recursos, buscamos por nuestra aplicación en este caso geoke.
+
+Ahora seleccionamos el que ponga en tipo Grupo de seguridad de red, entramos dentro de Reglas de seguridad de entrada --> Agregar.
+
+Añadimos el puerto 80 y guardar.
+
+Ya tenemos abierto en nuestra aplicación el puerto 80.
+
+##### Cambiar nombre de dominio
+
+En el panel de la izquierda Grupo de Recursos, seleccionamos el recurso que usa nuestra máquina virtual, seleccionamos en el lado de la derecha la fila que es de tipo Dirección IP pública.
+
+Nos vamos a configuración y cambiamos el nombre de dominio, en mi caso es este __geoke.westeurope.cloudapp.azure.com__
+
+
+
+##### Despliegue
+
+He añadido el uso de Fabric para el despliegue de la aplicación remotamente y otras opciones que se podrán realizar remotamente para nuestra aplicación.
+
+Las funciones que contiene el fichero son:
+
+run_app: para ejecutar la aplicación
+
+pull: para actualizar el código de la aplicación.
+
+__fabfile.py__
+
+```py
+
+from fabric.api import run
+
+def run_app():
+	run('cd Geoke/')
+	run('sudo su')
+	run('export PORT="80"')
+	run('npm start')
+
+def pull():
+	run('cd Geoke/ && sudo git pull')
+
+
+```
+Para usar Fabric es necesario instalarlo. Podemos hacerlo con apt-get.
+
+    sudo apt-get install fabric
+
+Para usarlo simplemente utilizamos el comando:
+
+    fabric [-H host_destino] <funcion>
+
+Al ser remoto, con la opción -H indicamos el host remoto en el que realizar la acción.
