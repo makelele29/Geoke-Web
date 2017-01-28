@@ -73,9 +73,11 @@ Hay dos maneras de crear el contenedor:
 
 - Instalar [Vagrant](https://www.vagrantup.com/downloads.html)
   - Instalar el plugin para Vagrant de Azure
+
         vagrant plugin install vagrant-azure --plugin-version '2.0.0.pre1'
 
 - Instalar Ansible
+
       sudo apt-get install ansible
 
 #### Configuración
