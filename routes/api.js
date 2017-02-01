@@ -20,8 +20,8 @@ router.route('/usuario')
 
 router.route('/usuario/:alias')
  .get(UsuCtrl.findByAlias)
- .put(auth,UsuCtrl.update)
- .delete(auth,UsuCtrl.eliminar);
+ .put(UsuCtrl.update)
+ .delete(UsuCtrl.eliminar);
 
 router.route("/login")
   .post(UsuCtrl.login);
