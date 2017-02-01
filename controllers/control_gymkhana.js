@@ -1,108 +1,114 @@
+var sequelize=require('../conexiones/sequelize.js');
+var Sequelize = require('sequelize');
+var gymkhana=require('../models/GYMKHANA.js');
 var mongoose = require('mongoose');
 var model_usu = require('../models/user.js');
-var passport = require('passport');
-//GET - Devuelve los datos de todos los usuarios
-exports.findAll = function(req, res) {
- model_usu.find(function(err, result) {
-   if(err) return res.json(500, { mensaje:err.message});
-   if(result.length==0) return res.json(500, { mensaje: 'No hay ningun usuario' });
-   res.json(200,result);
- });
-};
-
-//GET - Devuelve los datos de un usuario especifico
-exports.findByAlias = function(req, res) {
-  model_usu.findOne({alias:req.params.alias},function(err, result){
-    if(err) return res.json(500, { mensaje:err.message});
-    if(result==null) return res.json(500, { mensaje: 'No hay ningun usuario con ese alias' });
-    res.json(200,result);
-  });
-
-};
-
+var misiones=require('../models/MISIONES.js');
 //POST - Insertar nuevo usuario
 exports.add = function(req, res) {
-
- var usu = new model_usu({
-   nombre: req.body.nombre,
-   alias: req.body.alias,
-   apellidos: req.body.apellidos
- });
-
-
- usu.setPassword(req.body.pass);
-
- usu.save(function(err) {
-    if(err) return res.json(500,{mensaje: 'El usuario ya esta registrado'});
-    var token;
-    token = usu.generateJwt();
-    res.status(200);
-    res.json({
-      "token" : token
+  if (!req.payload._id) {
+    return res.status(401).json({
+      data : "Usted no tiene autorización"
     });
-  });
+  } else {
+    // En caso de acceso
+    
+    model_usu
+      .findById(req.payload._id)
+      .exec(function(err, user) {
+        var par=new gymkhana(sequelize,Sequelize);
+        par.sync({force: false}).then(function () {
+          return par.create({
+               username: req.payload.alias,
+               nombre_gymk: req.body.nombre,
+               fecha_ini: req.body.fechaIni,
+               fecha_fin: req.body.fechaFin
+             });
+         }).then(function(result){
 
-};
-
-//PUT - Actualiza usuario
-exports.update = function(req, res) {
-  model_usu.findOne({alias: req.params.alias},function(err,usu){
-    if(err) return res.json(501, { mensaje:err.message});
-    if(usu==null) return res.json(502, { mensaje: 'No hay ningun usuario con ese alias' });
-    if(req.body.nombre)usu.nombre=req.body.nombre;
-    if(req.body.pass)usu.setPassword(req.body.pass);
-    if(req.body.apellidos)usu.apellidos=req.body.apellidos;
-    usu.save(function(err,result){
-      if(err) return res.json(503,{mensaje:'Hubo un problema al actualizar los datos personales'});
-      res.json(200,{mensaje: 'El usuario ha sido actualizado'});
-    });
-
-  });
+           var mis=[]
+           mis=req.body.misiones;
 
 
-};
+             var mi=new misiones(sequelize,Sequelize);
 
-//DELETE - Elimina a un usuario
-exports.eliminar = function(req, res) {
+              mi.sync({force: false}).then(function () {
+                 for (var mision in mis){
+                    var m= mis[mision]
+                 mi.create({
+                  id_gymkhana: result.id_gymkhana,
+                  pregunta: m.pregunta,
+                  respuesta1:m.respuesta1,
+                  respuesta2:m.respuesta2,
+                  respuesta3:m.respuesta3,
+                  respuesta4:m.respuesta4,
+                  respuesta_correcta: m.correcta,
+                  latitud: m.geo.lat,
+                  longitud: m.geo.lng
+                   }).catch(function(error) {
+                     return res.status(500).json({data:error})
+                   });
+                 }
+                 return res.json(200,{data:"Gymkhana creada con exito"})
+               })
 
-  model_usu.remove({alias:req.params.alias},function(err, result) {
-    if(err) return res.json(500,{mensaje:'El usuario no existe'});
-    res.json(200,{mensaje: 'El usuario ha sido eliminado'});
-  });
-
-};
-//POST - Te confirma si el usuario esta registrado
-exports.login = function(req, res) {
-
-   /*model_usu.findOne({alias:req.body.alias},function(err,result){
-   	if(err) return res.json(500, { mensaje: 'Error en la Base de datos' });
-   	if(result==null) return res.json(500, { mensaje: 'El usuario y/o la password son incorrectos' });
-		if (result.validPassword(req.body.pass))
-    		res.json(200,{token:result.generateJwt()});
-		else
-			res.json(500, { mensaje: 'El usuario y/o la password son incorrectos' })
-  });*/
- passport.authenticate('local', function(err, user, info){
-    var token;
-
-    // If Passport throws/catches an error
-    if (err) {
-      res.status(404).json(err);
-      return;
+         }).catch(function(error) {
+           return res.status(500).json({data:error})
+         });
+      })
     }
 
-    // If a user is found
-    if(user){
-      token = user.generateJwt();
-      res.status(200);
-      res.json({
-        "token" : token
-      });
-    } else {
-      // If user is not found
-      res.status(401).json(info);
-    }
-  })(req, res);
-
 
 };
+
+exports.showGymkhanas=function(req,res){
+  if (!req.payload._id) {
+    res.status(401).json({
+        data : "Usted no tiene autorización"
+    });
+  } else {
+    // En caso de acceso
+    model_usu
+      .findById(req.payload._id)
+      .exec(function(err, user) {
+        var par=new gymkhana(sequelize,Sequelize);
+        par.sync({force: false}).then(function () {
+          return par.findAll({where:{'username':req.payload.alias}});
+         }).then(function(result){
+           res.json(200,{data:result});
+         }).catch(function(error) {
+           return res.status(500).json({data:error})
+         });
+
+      })
+    }
+}
+
+exports.showMisiones=function(req,res){
+  if (!req.payload._id) {
+    res.status(401).json({
+        data : "Usted no tiene autorización"
+    });
+  } else {
+    // En caso de acceso
+    model_usu
+      .findById(req.payload._id)
+      .exec(function(err, user) {
+        var mision=new misiones(sequelize,Sequelize);
+        mision.sync({force: false}).then(function () {
+          return mision.findAll({where:{'id_gymkhana':req.body.id_gymkhana}});
+         }).then(function(result){
+           var mi=result;
+           var gymk=new gymkhana(sequelize,Sequelize)
+           gymk.sync({force:false}).then(function () {
+             return gymk.findOne({where:{'id_gymkhana':req.body.id_gymkhana}});
+            }).then(function(result){
+              res.json(200,{gymkhana:result,misiones:mi});
+            })
+         }).catch(function(error) {
+           return res.status(500).json({data:error})
+         });
+
+      })
+    }
+}

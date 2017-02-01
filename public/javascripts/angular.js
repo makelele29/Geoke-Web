@@ -13,7 +13,7 @@ app.config(['$routeProvider', '$locationProvider',
    }).
  	when('/profile/:alias', {
       templateUrl: 'profile.html',
-		controller : 'profileCtrl'
+      controller : 'profileCtrl'
    }).
    when('/gymkhanas', {
       templateUrl: 'gymkhanas.html',
@@ -23,14 +23,17 @@ app.config(['$routeProvider', '$locationProvider',
       templateUrl: 'misiones.html',
       controller : 'misionesCtrl'
    }).
+   when('/misiones/:id_gymkhana', {
+      templateUrl: 'misiones.html',
+      controller : 'misionesCtrl'
+   }).
    otherwise({
       redirectTo: '/login'
    });
    $locationProvider.html5Mode({
-     enabled: true,
-     requireBase: false
-   });
-   $locationProvider.hashPrefix('!');
+   enabled: true,
+   requireBase: false
+ });
 
 }]);
 //======================= SERVICIOS =======================
@@ -90,12 +93,13 @@ app.service('authentication',['$http', '$window',function ($http, $window) {
 app.service('Map', ['$window',function($window) {
   var infowindow
   var map
+  var position
   var setPos = function (e) {
-    this.posicion = e.latLng;
+    posicion = e.latLng;
   };
 
-  var getPos = function () {
-    return this.posicion;
+  this.getPos = function () {
+    return posicion;
   };
   this.info=function(){
     return infowindow
@@ -178,7 +182,7 @@ app.service('Map', ['$window',function($window) {
 
       var marker = new google.maps.Marker({
           map: this.map(),
-          position: getPos(),
+          position: misiones[misiones.length-1].geo,
           animation: google.maps.Animation.DROP,
           title: 'Misión ' + misiones.length,
           info: '<div><div class="text-center"><h6>Misión '+misiones.length+'<h6></div>'+
@@ -189,7 +193,6 @@ app.service('Map', ['$window',function($window) {
           '</center></div></div>'
         });
 
-        misiones[misiones.length-1].geo=getPos();
         markers.push(marker)
 
       }
@@ -223,16 +226,16 @@ app.run(['$rootScope', '$location', 'authentication',function ($rootScope, $loca
 }])
 ////======================= CONTROALDORES =======================
 //------------------------- PERFIL -------------------------
-app.controller('profileCtrl', ['$rootScope', '$scope', '$localStorage','$http','$window', 'authentication',
- function($rootScope, $scope, $localStorage,$http,$window, authentication) {
-
-  if(authentication.isLoggedIn()){
-      $scope.show=true;
-      $scope.user=authentication.currentUser();
-
-  }else{
-      $scope.show=false;
-  }
+app.controller('profileCtrl', ['$scope','$http','$window','$routeParams',
+ function( $scope,$http,$window,$routeParams) {
+     $scope.show=true;
+     $scope.user=$routeParams.alias;
+  /* if(authentication.isLoggedIn()){
+         $scope.show=true;
+         $scope.user=authentication.currentUser();
+     }else{
+         $scope.show=false;
+     }*/
 
 
 }]);
@@ -278,19 +281,57 @@ function($rootScope, $scope, $localStorage,$http,$window,authentication) {
 
 }]);
 //------------------------- MISIONES -------------------------
-app.controller('misionesCtrl', ['$scope','Map','$compile','authentication', '$location', '$anchorScroll',
-function($scope, Map,$compile,authentication, $location, $anchorScroll) {
-
+app.controller('misionesCtrl', ['$scope','Map','$compile','authentication', '$location', '$http','$routeParams',
+function($scope, Map,$compile,authentication, $location, $http,$routeParams) {
+  Map.init()
   var misiones=[]
   var markers=[]
   var index
+  $scope.gymkhana={}
   $scope.mision={pregunta:'',respuesta1:'',respuesta2:'',respuesta3:'',respuesta4:'',correcta:1,geo:""}
   $scope.showMisiones=false
   $scope.showGymkhana=true
+  if(typeof $routeParams.id_gymkhana != "undefined"){
+    var gymk={'id_gymkhana':$routeParams.id_gymkhana}
+    $http({
+      method: 'POST',
+      url: '/api/misiones',
+      data: gymk,
+      headers: {
+        'Authorization': 'Bearer '+ authentication.getToken()
+      }
+    }).success(function(data) {
+
+
+          $scope.gymkhana.nombre=data.gymkhana.nombre_gymk
+          $scope.gymkhana.fechaIni=new Date(data.gymkhana.fecha_ini)
+          $scope.gymkhana.fechaFin=new Date(data.gymkhana.fecha_fin)
+          var m=data.misiones
+          for(var mision in m){
+          var mi={pregunta:m[mision].pregunta,respuesta1:m[mision].respuesta1,respuesta2:m[mision].respuesta2,respuesta3:m[mision].respuesta3,
+              respuesta4:m[mision].respuesta4,correcta:m[mision].respuesta_correcta,geo:{lat:m[mision].latitud,lng:m[mision].longitud}}
+
+              misiones.push(mi);
+                Map.addMarker(markers,misiones)
+                markers[markers.length-1].addListener('click',function(){
+                var html = $compile(this.info)($scope);
+
+                Map.info().setContent(html[0]);
+                Map.info().open(Map.map,this);
+              })
+
+          }
+          //$location.path("/gymkhanas")
+    }).error(function(data) {
+        alert(JSON.stringify(data))
+    });
+
+  }
   $scope.guardar=function(){
     if($('#guardar').text()=='Guardar'){
 
       misiones.push($scope.mision);
+      misiones[misiones.length-1].geo  =Map.getPos();
 
       Map.addMarker(markers,misiones)
       markers[markers.length-1].addListener('click',function(){
@@ -340,28 +381,87 @@ function($scope, Map,$compile,authentication, $location, $anchorScroll) {
 
    }
   $scope.terminar=function(){
-    var gymkhana={nombre:$scope.gymkhana.nombre,fechaIni:$scope.gymkhana.fechaIni,fechaFin:$scope.gymkhana.fechaFin,misiones:misiones}
-    alert(JSON.stringify(gymkhana))
+    var gymkhana
+    if(typeof $routeParams.id_gymkhana != "undefined")
+      gymkhana={nombre:$scope.gymkhana.nombre,fechaIni:$scope.gymkhana.fechaIni,fechaFin:$scope.gymkhana.fechaFin,misiones:misiones, id:$routeParams.id_gymkhana}
+    else
+      gymkhana={nombre:$scope.gymkhana.nombre,fechaIni:$scope.gymkhana.fechaIni,fechaFin:$scope.gymkhana.fechaFin,misiones:misiones}
+
+
+    $http({
+      method: 'POST',
+      url: '/api/gymkhana',
+      data: gymkhana,
+      headers: {
+        'Authorization': 'Bearer '+ authentication.getToken()
+      }
+    }).success(function(data) {
+
+        $location.path("/gymkhanas")
+    }).error(function(data) {
+        alert(JSON.stringify(data))
+    });
+
   }
 
   $scope.mostrarMap=function(){
-    $scope.showGymkhana=false
-    $scope.showMisiones=true
+
+    if(typeof $scope.gymkhana.nombre=="undefined" || typeof $scope.gymkhana.fechaIni=="undefined" || typeof $scope.gymkhana.fechaFin=="undefined" || $scope.gymkhana.nombre=="" || $scope.gymkhana.fechaIni==null || $scope.gymkhana.fechaFin==null){
+      if(typeof $scope.gymkhana.nombre=="undefined" || $scope.gymkhana.nombre==""){
+        $scope.colorNombre="red"
+      }else {
+          $scope.colorNombre="undefined"
+      }
+      if(typeof $scope.gymkhana.fechaIni=="undefined" || $scope.gymkhana.fechaIni==null){
+          $scope.colorIni="red"
+      }else {
+          $scope.colorIni="undefined"
+      }
+      if(typeof $scope.gymkhana.fechaFin=="undefined" || $scope.gymkhana.fechaFin==null){
+          $scope.colorFin="red"
+      }else {
+          $scope.colorFin="undefined"
+      }
+      $scope.errorDate="Algunos de los campos estan vacíos"
+    }else if($scope.gymkhana.fechaIni>$scope.gymkhana.fechaFin){
+      $scope.errorDate="La fecha de inicio debe ser anterior a la fecha de fin"
+    }else{
+      $scope.showGymkhana=false
+      $scope.showMisiones=true
 
 
-     Map.init()
-
+    }
   }
+
 }]);
 //------------------------- GYMKHANAS -------------------------
-app.controller('gymkhanasCtrl', ['$scope','$location',function($scope,$location) {
+app.controller('gymkhanasCtrl', ['$scope','$location','$http','authentication',function($scope,$location,$http,authentication) {
   $scope.show=function(){
+
     $location.path("/misiones")
+  }
+  $scope.gymkhanas=[]
+  $http({
+    method: 'GET',
+    url: '/api/gymkhana',
+    headers: {
+      'Authorization': 'Bearer '+ authentication.getToken()
+    }
+  }).success(function(data) {
+
+      $scope.gymkhanas=data.data
+  }).error(function(data) {
+      alert(JSON.stringify(data))
+  });
+  $scope.currentPage=0;
+  $scope.editar=function(data){
+      $location.path("/misiones/"+data)
   }
 
 }]);
 //------------------------- NAVEGADOR -------------------------
 app.controller('navCtrl', ['$scope','$location','authentication',function($scope,$location,authentication) {
+
   $scope.logout=function(){
     authentication.logout();
     $location.path("/")

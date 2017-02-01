@@ -1,0 +1,3 @@
+#!/bin/bash
+
+export DATABASE_URL="postgres://makelele29:12345a@localhost:5432/geoke"

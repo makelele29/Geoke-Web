@@ -1,30 +1,31 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('gymkhana', {
-    ID_GYMKHANA: {
-      type: DataTypes.INTEGER(11),
+  return sequelize.define('GYMKHANA', {
+    id_gymkhana: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    ALIAS: {
-      type: DataTypes.CHAR(20),
-      allowNull: false
-    },
-    NOMBRE: {
+    username: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    FECHA_INI: {
+    nombre_gymk: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    fecha_ini: {
       type: DataTypes.DATE,
       allowNull: false
     },
-    FECHA_FIN: {
+    fecha_fin: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false
     }
   }, {
-    tableName: 'gymkhana'
+    tableName: 'GYMKHANA',
+    timestamps: false
   });
 };

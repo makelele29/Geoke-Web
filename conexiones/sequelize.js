@@ -1,12 +1,4 @@
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('GEOKE', 'root', '1', {
-  host: 'localhost',
-  dialect: 'mysql',
-
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  },
-});
+var config=require('../config/config')
+var sequelize = new Sequelize(config.db_Postgres);
 module.exports=sequelize;

@@ -1,6 +1,6 @@
 var sequelize=require('./sequelize.js');
 var Sequelize = require('sequelize');
-var participa=require('../models/participa.js');
+var participa=require('../models/PARTICIPA.js');
 //Funcion para conectar a la base de datos
 function BD(res){
   this.res=res;

@@ -12,6 +12,7 @@ var ip= require('ip')
 var passport = require('passport');
 var app = express();
 var config=require('./config/config')
+
 require('./config/passport');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

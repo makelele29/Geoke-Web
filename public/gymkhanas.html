@@ -1,1 +1,23 @@
-<button class="btn btn-primary" name="button" ng-click="show()">Crear Gymkhana</button>
+
+<button class="btn btn-primary col-md-3 col-xs-6" name="button" ng-click="show()">Crear Gymkhana</button>
+
+
+  <table class="table table-condensed table-hover">
+    <thead>
+      <tr>
+    		<th>Gymkhana
+    		</th>
+    		<th>Fecha de Inicio
+    		</th>
+    		<th>Fecha de Fin
+    		</th>
+    	</tr>
+    </thead>
+   <tbody>
+  	<tr ng-repeat="gymkhana in gymkhanas" ng-click="editar(gymkhana.id_gymkhana)">
+  		<td>{{gymkhana.nombre_gymk}}</td>
+  		<td>{{gymkhana.fecha_ini | date :  "dd/MM/y" }}</td>
+  		<td>{{gymkhana.fecha_fin | date :  "dd/MM/y" }}</td>
+	 </tr>
+ </tbody>
+</table>
