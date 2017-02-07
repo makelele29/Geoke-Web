@@ -8,6 +8,7 @@ var userSchema = new mongoose.Schema({
   alias: { type: String, required: true, index:{unique: true} },
   password: { type: String, required: true },
   apellidos: String,
+  email:{ type: String },
   salt: String
 });
 
@@ -29,7 +30,8 @@ userSchema.methods.generateJwt = function() {
     _id: this._id,
     alias: this.alias,
     nombre: this.nombre,
-	 apellidos: this.apellidos,
+	  apellidos: this.apellidos,
+    email:this.email,
     exp: parseInt(expiry.getTime() / 1000),
   }, config.clave);
 };

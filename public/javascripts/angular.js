@@ -27,9 +27,14 @@ app.config(['$routeProvider', '$locationProvider',
       templateUrl: 'misiones.html',
       controller : 'misionesCtrl'
    }).
+   when('/configuracion', {
+      templateUrl: 'preferencias.html',
+      controller : 'confCtrl'
+   }).
    otherwise({
       redirectTo: '/login'
    });
+
    $locationProvider.html5Mode({
    enabled: true,
    requireBase: false
@@ -71,7 +76,9 @@ app.service('authentication',['$http', '$window',function ($http, $window) {
       payload = JSON.parse(payload);
       return {
         alias : payload.alias,
-        nombre : payload.nombre
+        nombre : payload.nombre,
+        apellidos: payload.apellidos,
+        email:payload.email
       };
     }
   };
@@ -226,17 +233,35 @@ app.run(['$rootScope', '$location', 'authentication',function ($rootScope, $loca
 }])
 ////======================= CONTROALDORES =======================
 //------------------------- PERFIL -------------------------
-app.controller('profileCtrl', ['$scope','$http','$window','$routeParams',
- function( $scope,$http,$window,$routeParams) {
+app.controller('profileCtrl', ['$scope','$http','$window','$routeParams','authentication','$location',
+ function( $scope,$http,$window,$routeParams,authentication,$location) {
+   $scope.show=true;
+   $scope.user=$routeParams.alias;
+   if(authentication.isLoggedIn() && authentication.currentUser().alias==$scope.user){
      $scope.show=true;
-     $scope.user=$routeParams.alias;
-  /* if(authentication.isLoggedIn()){
-         $scope.show=true;
-         $scope.user=authentication.currentUser();
-     }else{
-         $scope.show=false;
-     }*/
+   }else{
+     $scope.show=false;
+   }
+   $scope.configuracion=function(){
+     $location.path('/configuracion')
+   }
+   google.charts.load("current", {packages:["corechart"]});
+   google.charts.setOnLoadCallback(drawChart);
+   function drawChart() {
+     var data = google.visualization.arrayToDataTable([
+       ['Task', 'Estadísticas'],
+       ['Completadas',     3],
+       ['Abandonadas',      1]
+     ]);
 
+     var options = {
+       title: 'Estadistícas',
+       pieHole: 0.4,
+     };
+
+     var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+     chart.draw(data, options);
+   }
 
 }]);
 //------------------------- USUARIO -------------------------
@@ -466,5 +491,11 @@ app.controller('navCtrl', ['$scope','$location','authentication',function($scope
     authentication.logout();
     $location.path("/")
   }
+
+}]);
+//------------------------- CONFIGURACION -------------------------
+app.controller('confCtrl', ['$scope','$location','authentication',function($scope,$location,authentication) {
+
+  $scope.user=authentication.currentUser()
 
 }]);

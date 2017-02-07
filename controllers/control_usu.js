@@ -36,7 +36,8 @@ exports.add = function(req, res) {
  var usu = new model_usu({
    nombre: req.body.nombre,
    alias: req.body.alias,
-   apellidos: req.body.apellidos
+   apellidos: req.body.apellidos,
+   email:req.body.email
  });
 
  usu.setPassword(req.body.password);

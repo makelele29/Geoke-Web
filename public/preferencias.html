@@ -1,0 +1,38 @@
+<div class="row  container-fluid">
+   <div class="col-sm-2 col-sx-2">
+     <div class="btn-group-vertical"  >
+       <button type="button" class="btn btn-primary">Datos personales</button>
+       <button type="button" class="btn btn-primary">Eliminar cuenta</button>
+     </div>
+   </div>
+   <div class="col-sm-10 col-sx-10">
+     <div class="panel-body">
+       <form id="signupform" name="reg" role="form" class="form-horizontal">
+         <div class="form-group">
+           <label for="firstname" class="col-md-3 control-label">Nombre</label>
+           <div class="col-md-9">
+             <input type="text" ng-model="user.nombre" name="nombre" placeholder="Nombre" class="form-control"/>
+           </div>
+         </div>
+         <div class="form-group">
+           <label for="lastname" class="col-md-3 control-label">Apellidos</label>
+           <div class="col-md-9">
+             <input type="text" ng-model="user.apellidos" name="apellidos" placeholder="Apellidos" class="form-control"/>
+           </div>
+         </div>
+         <div class="form-group ">
+           <label for="email" class="col-md-3 control-label">Email</label>
+           <div class="col-md-9">
+             <input type="email" ng-model="user.email" name="email" placeholder="Email" class="form-control " id="inputSuccess"/>
+           </div>
+         </div>
+         <div class="form-group">
+           <!-- Button-->
+           <div class="col-md-offset-3 col-md-9">
+             <button id="btn-signup" type="submit" class="btn btn-info" ng-click="modificar()" ><i class="icon-hand-right"></i>Guardar</button>
+           </div>
+         </div>
+       </form>
+     </div>
+   </div>
+ </div>
